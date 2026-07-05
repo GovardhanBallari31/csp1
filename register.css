@@ -1,0 +1,160 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#00c9ff,#92fe9d,#4facfe);
+}
+
+.container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+
+    width:420px;
+    padding:45px;
+    border-radius:20px;
+
+    background:rgba(255,255,255,.15);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.3);
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+    text-align:center;
+
+    animation:slide .8s;
+}
+
+@keyframes slide{
+
+from{
+
+opacity:0;
+
+transform:translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+.card h1{
+
+color:white;
+
+margin-bottom:30px;
+
+font-size:30px;
+
+}
+
+input,
+select{
+
+width:100%;
+
+padding:14px;
+
+margin:12px 0;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
+
+font-size:15px;
+
+background:rgba(255,255,255,.9);
+
+transition:.3s;
+
+}
+
+input:focus,
+select:focus{
+
+transform:scale(1.02);
+
+box-shadow:0 0 10px rgba(255,255,255,.8);
+
+}
+
+button{
+
+width:100%;
+
+padding:14px;
+
+margin-top:20px;
+
+border:none;
+
+border-radius:12px;
+
+background:linear-gradient(45deg,#11998e,#38ef7d);
+
+color:white;
+
+font-size:18px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.4s;
+
+}
+
+button:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 10px 20px rgba(56,239,125,.4);
+
+}
+
+p{
+
+margin-top:20px;
+
+color:white;
+
+}
+
+a{
+
+color:#ffe066;
+
+text-decoration:none;
+
+font-weight:bold;
+
+}
+
+a:hover{
+
+text-decoration:underline;
+
+}
