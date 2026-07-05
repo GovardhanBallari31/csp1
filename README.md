@@ -1,111 +1,202 @@
 # 🎓 Career Guidance Portal
 
-A modern **Career Guidance Portal** designed to help **10th and Intermediate students** explore career opportunities, roadmaps, scholarships, quizzes, and mentorship programs.
+A modern and responsive **Career Guidance Portal** designed to help **10th Class and Intermediate students** explore career opportunities, educational roadmaps, scholarships, aptitude assessments, and mentorship programs.
+
+---
+
+## 🌟 Project Overview
+
+Choosing the right career path can be challenging for students. This portal provides a centralized platform where students can:
+
+* Discover career opportunities
+* Explore educational roadmaps
+* Take career aptitude quizzes
+* Find scholarship information
+* Connect with mentors
+* Receive career guidance based on their interests
 
 ---
 
 ## 🌐 Live Demo
 
-🔗 **Website:**  
+🔗 **Website:**
 https://careerguidanceportal.netlify.app/
 
 ---
 
-## 📽️ Project Presentation
+## ✨ Key Features
 
-📄 **PowerPoint Presentation:**  
+### 🔐 Authentication
 
-career_guidance_workshop.pptx
+* User Registration
+* User Login
+* Secure Access Management
+
+### 🎯 Career Guidance
+
+* Career suggestions based on interests
+* Detailed information about career paths
+
+### 🛣️ Career Roadmaps
+
+* Step-by-step educational and career planning
+* Guidance after 10th and Intermediate
+
+### 📝 Career Aptitude Quiz
+
+* Interactive career assessment
+* Helps identify suitable career domains
+
+### 🎓 Scholarship Information
+
+* Scholarship listings and eligibility details
+* Support for financially assisted education
+
+### 👨‍🏫 Mentorship Program
+
+* Mentor information and guidance resources
+* Career counseling support
+
+### 📱 Responsive Design
+
+* Mobile-friendly interface
+* Works seamlessly across devices
+
+### 🎨 Modern UI/UX
+
+* Glassmorphism-based design
+* Clean and attractive user experience
 
 ---
 
-## ✨ Features
-
-- 🔐 User Login & Registration
-- 🎯 Career Guidance
-- 🛣️ Career Roadmaps
-- 📝 Career Aptitude Quiz
-- 🎓 Scholarship Information
-- 👨‍🏫 Mentorship Section
-- 📱 Fully Responsive UI
-- 🎨 Modern Glassmorphism Design
-
----
-
-## 🛠️ Technologies Used
+## 🛠️ Technology Stack
 
 ### Frontend
-- HTML5
-- CSS3
-- JavaScript
+
+* HTML5
+* CSS3
+* JavaScript
 
 ### Backend
-- Java
-- Spring Boot
-- Spring Data JPA
+
+* Java
+* Spring Boot
+* Spring Data JPA
 
 ### Database
-- MySQL
+
+* MySQL
 
 ### Deployment
-- GitHub
-- Netlify
-- Railway
+
+* GitHub
+* Netlify
+* Railway
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
-```
-career-guidance-portal
+```text
+career-guidance-portal/
 │
-├── index.html
-├── login.html
-├── register.html
-├── styles.css
-├── login.css
-├── register.css
-├── app.js
-├── data.js
-├── login.js
-├── register.js
+├── frontend/
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── styles.css
+│   ├── login.css
+│   ├── register.css
+│   ├── app.js
+│   ├── data.js
+│   ├── login.js
+│   └── register.js
+│
+├── backend/
+│   ├── src/main/java
+│   ├── src/main/resources
+│   └── pom.xml
+│
 └── README.md
 ```
 
 ---
 
-## 🚀 Installation
+## 🚀 Installation & Setup
 
-Clone the repository
+### 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/GovardhanBallari31/career-guidance-portal.git
 ```
 
-Go to project folder
+### 2️⃣ Navigate to the Project Directory
 
 ```bash
 cd career-guidance-portal
 ```
 
-Open
+### 3️⃣ Frontend Setup
 
-```
+Open:
+
+```text
 index.html
 ```
 
 in your browser.
 
+### 4️⃣ Backend Setup (Spring Boot)
+
+Configure MySQL database credentials in:
+
+```properties
+application.properties
+```
+
+Run the Spring Boot application:
+
+```bash
+mvn spring-boot:run
+```
+
+---
+
+## 📸 Screenshots
+
+Add project screenshots here:
+
+* Home Page
+* Career Guidance Page
+* Quiz Module
+* Scholarship Section
+* Mentor Section
+
 ---
 
 ## 🔮 Future Enhancements
 
-- AI Career Recommendation
-- Resume Builder
-- Chatbot Support
-- Admin Dashboard
-- Email Notifications
-- Online Mentor Booking
+* 🤖 AI-Based Career Recommendation System
+* 📄 Resume Builder
+* 💬 Career Chatbot Assistant
+* 📊 Admin Dashboard
+* 📧 Email Notifications
+* 📅 Online Mentor Booking System
+* 🎥 Career Webinar Integration
+* 📈 Student Progress Tracking
+
+---
+
+## 🎯 Learning Outcomes
+
+This project demonstrates:
+
+* Full Stack Web Development
+* Spring Boot REST APIs
+* Database Integration using MySQL
+* Authentication & Authorization
+* Responsive UI Design
+* Software Engineering Best Practices
 
 ---
 
@@ -113,9 +204,23 @@ in your browser.
 
 **Ballari Govardhan**
 
-GitHub:
+GitHub Profile:
 https://github.com/BallariGovardhan31
 
 ---
 
-⭐ If you like this project, don't forget to give it a star!
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome.
+
+Feel free to fork the repository and submit a pull request.
+
+---
+
+## ⭐ Support
+
+If you found this project useful, please consider giving it a **Star ⭐** on GitHub.
+
+---
+
+### Thank You for Visiting! 🚀
