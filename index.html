@@ -4,7 +4,595 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Career Guidance Portal — CSP Project By B.Tech Students</title>
-<link rel="stylesheet" href="Styles.css">
+<style>
+/* ============================================================
+   EDITABLE SETTINGS — change these to customise the portal
+   ============================================================ */
+:root {
+  --accent:        #2dce88;   /* Main green accent — change to any colour */
+  --accent2:       #0ea5e9;   /* Blue accent */
+  --bg-page:       #080e23;   /* Page background */
+  --bg-card:       #0a162f;   /* Card background */
+  --bg-card2:      #051233;   /* Secondary card */
+  --bg-nav:        #0f1325;   /* Nav bar */
+  --text-primary:  #f0f4ff;   /* Main text */
+  --text-sec:      #8b9ab8;   /* Muted text */
+  --text-hint:     #4a5878;   /* Hint text */
+  --border:        rgba(255,255,255,0.07); /* Card borders */
+  --border-hover:  rgba(0,200,150,0.3);   /* Hover border */
+  --font:          'Segoe UI', system-ui, sans-serif;
+  --font-mono:     'Consolas', 'Courier New', monospace;
+
+  /* EDITABLE: Project info shown in hero */
+  --project-name:  "Career Guidance Portal";
+  --college-name:  "GATES INSTITUTE OF TECHNOLOGY GOOTY";
+  --batch:         "B.Tech CSE 2024–28";
+}
+/* ============================================================ */
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg-page);color:var(--text-primary);min-height:100vh}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg-page)}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+
+/* NAV */
+.topbar{background:var(--bg-nav);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:0;padding:0 1rem;overflow-x:auto;scrollbar-width:none}
+.topbar::-webkit-scrollbar{display:none}
+.logo{font-size:13px;font-family:var(--font-mono);color:var(--accent);padding:0 1rem 0 0;border-right:1px solid var(--border);margin-right:.5rem;white-space:nowrap;flex-shrink:0}
+.navbtn{padding:14px 16px;font-size:12px;font-family:var(--font-mono);color:var(--text-sec);background:none;border:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;letter-spacing:.04em}
+.navbtn:hover{color:var(--text-primary)}
+.navbtn.act{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0d1a30 0%,#0b0f1a 60%);padding:3rem 2rem 2.5rem;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.hero::before{content:'';position:absolute;right:-80px;top:-80px;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(0,200,150,.08),transparent 70%)}
+.hero::after{content:'';position:absolute;left:40%;bottom:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(14,165,233,.05),transparent 70%)}
+.hbadge{display:inline-block;background:rgba(0,200,150,.12);border:1px solid rgba(0,200,150,.25);color:var(--accent);font-size:11px;font-family:var(--font-mono);padding:4px 14px;border-radius:20px;margin-bottom:1rem;letter-spacing:.05em}
+.htitle{font-size:clamp(22px,4vw,36px);font-weight:700;color:var(--text-primary);line-height:1.2;margin-bottom:.6rem;position:relative;z-index:1}
+.htitle span{color:var(--accent)}
+.hsub{font-size:14px;color:var(--text-sec);line-height:1.7;max-width:560px;position:relative;z-index:1}
+.hstats{display:flex;gap:2rem;margin-top:1.75rem;flex-wrap:wrap;position:relative;z-index:1}
+.hstat .n{font-size:26px;font-weight:700;color:var(--text-primary);font-family:var(--font-mono);line-height:1}
+.hstat .l{font-size:11px;color:var(--text-sec);margin-top:3px;letter-spacing:.04em}
+.hteam{margin-top:1.5rem;font-size:12px;color:var(--text-hint);font-family:var(--font-mono)}
+.hteam span{color:var(--accent)}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:2rem 1.5rem}
+
+/* SECTION */
+.section{display:none}.section.show{display:block}
+.seclabel{font-size:11px;font-family:var(--font-mono);color:var(--text-hint);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.875rem}
+
+/* STREAM TABS */
+.streamrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:.5rem}
+.stab{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:.875rem .5rem;cursor:pointer;text-align:center;transition:all .15s}
+.stab:hover{border-color:var(--border-hover)}
+.stab.act{border-color:var(--accent);background:rgba(0,200,150,.06)}
+.stab .si{font-size:22px;margin-bottom:5px}
+.stab .sn{font-size:12px;font-weight:500;color:var(--text-primary);line-height:1.3}
+.stab .sd{font-size:11px;color:var(--text-sec);margin-top:2px}
+
+/* CAREER CARDS */
+.ccard{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;margin-bottom:10px;cursor:pointer;transition:border-color .15s}
+.ccard:hover{border-color:var(--border-hover)}
+.ccard.open{border-color:var(--accent)}
+.crow{display:flex;align-items:center;gap:11px}
+.cicn{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ctitle{font-size:14px;font-weight:500;color:var(--text-primary);flex:1}
+.cbadge{font-size:11px;padding:3px 10px;border-radius:20px;font-family:var(--font-mono);background:rgba(0,200,150,.12);color:var(--accent);white-space:nowrap}
+.carr{color:var(--text-hint);font-size:14px;transition:transform .2s}
+.ccard.open .carr{transform:rotate(90deg)}
+.cdetail{display:none;margin-top:.875rem;padding-top:.875rem;border-top:1px solid var(--border)}
+.ccard.open .cdetail{display:block}
+.csub{font-size:13px;color:var(--text-sec);line-height:1.7;margin-bottom:.875rem}
+.dtags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.875rem}
+.dtag{font-size:11px;padding:3px 10px;border-radius:20px;font-family:var(--font-mono);border:1px solid}
+.tblue{background:rgba(14,165,233,.1);border-color:rgba(14,165,233,.3);color:#38bdf8}
+.tgreen{background:rgba(0,200,150,.1);border-color:rgba(0,200,150,.3);color:#00c896}
+.tamber{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.3);color:#fbbf24}
+.tpurple{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.3);color:#a78bfa}
+.tcoral{background:rgba(251,113,133,.1);border-color:rgba(251,113,133,.3);color:#fb7185}
+.tgray{background:rgba(148,163,184,.1);border-color:rgba(148,163,184,.3);color:#94a3b8}
+
+.dg2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.875rem}
+.dbox{background:var(--bg-card2);border-radius:10px;padding:.75rem;border:1px solid var(--border)}
+.dh{font-size:11px;font-family:var(--font-mono);margin-bottom:.5rem;font-weight:500}
+.dh.g{color:var(--accent)}.dh.r{color:#fbbf24}
+.drow{font-size:12px;color:var(--text-sec);display:flex;gap:6px;margin-bottom:4px;line-height:1.5}
+.drow.g::before{content:'▸';color:var(--accent);flex-shrink:0}
+.drow.r::before{content:'▸';color:#fbbf24;flex-shrink:0}
+
+.scopebar{margin-bottom:.5rem}
+.sbrow{display:flex;justify-content:space-between;margin-bottom:4px}
+.sbrow span{font-size:11px;color:var(--text-sec)}
+.sbrow strong{font-size:11px;color:var(--text-primary)}
+.bar{height:5px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.bf{height:100%;border-radius:4px;background:var(--accent);transition:width 1s ease}
+
+/* ROADMAP */
+.rmsteps{position:relative;padding-left:24px}
+.rmstep{position:relative;margin-bottom:1.1rem}
+.rmstep::before{content:'';position:absolute;left:-18px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);border:2px solid var(--bg-page);box-shadow:0 0 0 2px var(--accent)}
+.rmstep::after{content:'';position:absolute;left:-14px;top:15px;width:2px;height:calc(100% + 4px);background:rgba(0,200,150,.2)}
+.rmstep:last-child::after{display:none}
+.ryear{font-size:11px;font-family:var(--font-mono);color:var(--accent);margin-bottom:2px}
+.rtitle{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:3px}
+.rdesc{font-size:13px;color:var(--text-sec);line-height:1.6}
+
+/* QUIZ */
+.qwrap{background:var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:1.75rem}
+.qpbar{height:4px;background:rgba(255,255,255,.06);border-radius:4px;margin-bottom:1.25rem;overflow:hidden}
+.qpfill{height:100%;background:var(--accent);border-radius:4px;transition:width .4s}
+.qnum{font-size:11px;font-family:var(--font-mono);color:var(--text-hint);margin-bottom:.5rem}
+.qtext{font-size:16px;font-weight:500;color:var(--text-primary);margin-bottom:1.25rem;line-height:1.55}
+.qopts{display:flex;flex-direction:column;gap:8px}
+.qopt{background:var(--bg-card2);border:1px solid var(--border);border-radius:10px;padding:.875rem 1.1rem;cursor:pointer;font-size:13px;color:var(--text-sec);transition:all .15s;text-align:left;font-family:var(--font)}
+.qopt:hover{border-color:var(--border-hover);color:var(--text-primary)}
+.qopt.sel{border-color:var(--accent);background:rgba(0,200,150,.08);color:var(--text-primary)}
+.qnext{margin-top:1.1rem;background:var(--accent);color:#06151a;border:none;border-radius:10px;padding:.7rem 1.75rem;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);transition:opacity .2s}
+.qnext:disabled{opacity:.3;cursor:not-allowed}
+.qresult{text-align:center;padding:1rem 0}
+.qresult .big{font-size:48px;margin-bottom:.75rem}
+.qresult .rtitle{font-size:20px;font-weight:700;color:var(--accent);margin-bottom:.75rem}
+.qresult .rsub{font-size:14px;color:var(--text-sec);line-height:1.7;margin-bottom:1.25rem;max-width:500px;margin-left:auto;margin-right:auto}
+.qresult .retake{background:transparent;border:1px solid rgba(0,200,150,.35);color:var(--accent);border-radius:10px;padding:.55rem 1.25rem;font-size:13px;cursor:pointer;font-family:var(--font)}
+
+/* SCHOLARSHIPS */
+.schcard{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;margin-bottom:10px}
+.schhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:.5rem}
+.schtitle{font-size:14px;font-weight:500;color:var(--text-primary)}
+.schamt{font-size:11px;font-family:var(--font-mono);color:var(--accent);background:rgba(0,200,150,.1);border:1px solid rgba(0,200,150,.2);padding:3px 10px;border-radius:20px;white-space:nowrap}
+.schdesc{font-size:13px;color:var(--text-sec);line-height:1.6;margin-bottom:.5rem}
+.scheli{font-size:12px;color:var(--text-hint)}
+.scheli strong{color:var(--text-sec)}
+
+/* MENTORSHIP */
+.mentcard{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.1rem;margin-bottom:10px;display:flex;gap:14px}
+.mavatar{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;letter-spacing:.03em}
+.mname{font-size:14px;font-weight:500;color:var(--text-primary);margin-bottom:2px}
+.mrole{font-size:12px;color:var(--text-sec);margin-bottom:.6rem}
+.mqoute{font-size:13px;color:var(--text-sec);line-height:1.6;font-style:italic;border-left:2px solid var(--accent);padding-left:.875rem;margin-bottom:.5rem}
+.mtopic{font-size:11px;font-family:var(--font-mono);color:var(--accent)}
+
+/* GRID LAYOUTS */
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:1.5rem}
+.mcard{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.1rem}
+.mcard .ml{font-size:11px;color:var(--text-hint);margin-bottom:4px;font-family:var(--font-mono)}
+.mcard .mv{font-size:22px;font-weight:700;color:var(--text-primary);line-height:1}
+.mcard .ms{font-size:12px;color:var(--text-sec);margin-top:3px}
+
+/* TIPS */
+.tip{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 10px 10px 0;padding:.875rem 1.1rem;margin-bottom:8px;font-size:13px;color:var(--text-sec);line-height:1.65}
+.tip strong{color:var(--text-primary);font-weight:500}
+
+/* FOOTER */
+.footer{text-align:center;padding:2rem;font-size:12px;color:var(--text-hint);border-top:1px solid var(--border);margin-top:3rem;font-family:var(--font-mono)}
+.footer span{color:var(--accent)}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .streamrow{grid-template-columns:repeat(2,1fr)}
+  .dg2{grid-template-columns:1fr}
+  .hstats{gap:1.25rem}
+  .main{padding:1.5rem 1rem}
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* ============================================================
+   EDITABLE SETTINGS — change these to customise the portal
+   ============================================================ */
+:root {
+  --accent:        #2fe6ac;   /* Main accent — emerald. Change to any colour */
+  --accent-2:      #8b7bff;   /* Secondary accent — electric violet, used for gradients/glow */
+  --accent-rgb:    47,230,172;
+  --accent-2-rgb:  139,123,255;
+
+  --bg-page:       #090c17;   /* Page background */
+  --bg-card:       #10152a;   /* Card background */
+  --bg-card2:      #0b0f1e;   /* Secondary card / inset panel */
+  --bg-nav:        rgba(9,12,23,.72);  /* Nav bar (glass) */
+  --bg-elevated:   #151b36;   /* Hover / raised surfaces */
+
+  --text-primary:  #f4f6ff;   /* Main text */
+  --text-sec:      #99a2c9;   /* Muted text */
+  --text-hint:     #59628a;   /* Hint text */
+
+  --border:        rgba(255,255,255,.075);  /* Card borders */
+  --border-hover:  rgba(47,230,172,.4);     /* Hover border */
+
+  --font:          'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:     'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+
+  --r-sm:  9px;
+  --r-md:  13px;
+  --r-lg:  17px;
+  --r-xl:  24px;
+
+  --ease:      cubic-bezier(.4,0,.2,1);
+  --ease-out:  cubic-bezier(.16,1,.3,1);
+
+  --shadow-sm:   0 1px 2px rgba(0,0,0,.45);
+  --shadow-md:   0 10px 28px -10px rgba(0,0,0,.6);
+  --shadow-glow: 0 0 0 1px rgba(var(--accent-rgb),.16),
+                 0 10px 32px -10px rgba(var(--accent-rgb),.30),
+                 0 4px 22px -10px rgba(var(--accent-2-rgb),.22);
+}
+/* ============================================================ */
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:
+    radial-gradient(900px 480px at 84% -8%, rgba(var(--accent-2-rgb),.13), transparent 60%),
+    radial-gradient(760px 440px at 6% 2%, rgba(var(--accent-rgb),.09), transparent 55%),
+    radial-gradient(1000px 600px at 50% 110%, rgba(var(--accent-2-rgb),.06), transparent 60%),
+    var(--bg-page);
+  background-attachment:fixed;
+  color:var(--text-primary);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+::selection{background:rgba(var(--accent-rgb),.35);color:#fff}
+
+a{color:inherit}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--accent),var(--accent-2));border-radius:4px}
+
+/* NAV */
+.topbar{
+  background:var(--bg-nav);
+  backdrop-filter:blur(16px) saturate(1.5);
+  -webkit-backdrop-filter:blur(16px) saturate(1.5);
+  border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:0;
+  padding:0 1rem;overflow-x:auto;scrollbar-width:none;
+}
+.topbar::-webkit-scrollbar{display:none}
+.logo{
+  font-size:12.5px;font-family:var(--font-mono);font-weight:700;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:.08em;
+  padding:0 1rem 0 0;border-right:1px solid var(--border);margin-right:.5rem;
+  white-space:nowrap;flex-shrink:0;
+}
+.navbtn{
+  position:relative;
+  padding:15px 16px;font-size:12px;font-family:var(--font-mono);font-weight:500;
+  color:var(--text-sec);background:none;border:none;cursor:pointer;
+  white-space:nowrap;border-bottom:2px solid transparent;
+  transition:color .18s var(--ease), border-color .18s var(--ease);
+  letter-spacing:.05em;
+}
+.navbtn:hover{color:var(--text-primary)}
+.navbtn.act{color:var(--accent);border-bottom-color:transparent}
+.navbtn.act::after{
+  content:'';position:absolute;left:16px;right:16px;bottom:-1px;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  border-radius:2px 2px 0 0;
+}
+
+/* HERO */
+.hero{
+  background:linear-gradient(150deg,#101a34 0%,#0a0e1c 65%);
+  padding:3.5rem 2rem 3rem;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid var(--border);
+}
+.hero::before{
+  content:'';position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(var(--accent-rgb),.16),transparent 70%);
+  filter:blur(6px);
+}
+.hero::after{
+  content:'';position:absolute;left:34%;bottom:-90px;width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(var(--accent-2-rgb),.14),transparent 70%);
+}
+.hbadge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(var(--accent-rgb),.12);border:1px solid rgba(var(--accent-rgb),.3);
+  color:var(--accent);font-size:11px;font-weight:600;font-family:var(--font-mono);
+  padding:5px 14px;border-radius:20px;margin-bottom:1.15rem;letter-spacing:.06em;
+  position:relative;z-index:1;
+}
+.htitle{
+  font-size:clamp(25px,4.2vw,40px);font-weight:800;color:var(--text-primary);
+  line-height:1.16;margin-bottom:.7rem;position:relative;z-index:1;letter-spacing:-.015em;
+}
+.htitle span{
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hsub{font-size:14.5px;color:var(--text-sec);line-height:1.75;max-width:560px;position:relative;z-index:1}
+.hstats{display:flex;gap:2.25rem;margin-top:2rem;flex-wrap:wrap;position:relative;z-index:1}
+.hstat{position:relative;padding-left:.9rem}
+.hstat::before{content:'';position:absolute;left:0;top:3px;bottom:3px;width:2px;border-radius:2px;background:linear-gradient(var(--accent),var(--accent-2));opacity:.55}
+.hstat .n{font-size:28px;font-weight:800;color:var(--text-primary);font-family:var(--font-mono);line-height:1}
+.hstat .l{font-size:11px;color:var(--text-sec);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+.hteam{margin-top:1.7rem;font-size:12px;color:var(--text-hint);font-family:var(--font-mono);position:relative;z-index:1}
+.hteam span{color:var(--accent);font-weight:600}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:2.35rem 1.5rem}
+
+/* SECTION */
+.section{display:none}.section.show{display:block;animation:secfade .35s var(--ease-out)}
+@keyframes secfade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.seclabel{
+  font-size:11px;font-family:var(--font-mono);font-weight:600;color:var(--text-hint);
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:.95rem;
+}
+
+/* STREAM TABS */
+.streamrow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:.5rem}
+.stab{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:1.05rem .6rem;cursor:pointer;text-align:center;
+  transition:border-color .18s var(--ease), background .18s var(--ease), transform .18s var(--ease), box-shadow .18s var(--ease);
+}
+.stab:hover{border-color:var(--border-hover);transform:translateY(-3px)}
+.stab.act{
+  border-color:var(--accent);
+  background:linear-gradient(180deg,rgba(var(--accent-rgb),.11),rgba(var(--accent-2-rgb),.04));
+  box-shadow:var(--shadow-glow);
+  transform:translateY(-1px);
+}
+.stab .si{font-size:23px;margin-bottom:6px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.35))}
+.stab .sn{font-size:12px;font-weight:600;color:var(--text-primary);line-height:1.3}
+.stab .sd{font-size:11px;color:var(--text-sec);margin-top:2px}
+
+/* CAREER CARDS */
+.ccard{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.2rem;margin-bottom:10px;cursor:pointer;
+  transition:border-color .18s var(--ease), box-shadow .18s var(--ease), transform .18s var(--ease);
+}
+.ccard:hover{border-color:var(--border-hover);transform:translateY(-1px)}
+.ccard.open{border-color:var(--accent);box-shadow:var(--shadow-glow)}
+.crow{display:flex;align-items:center;gap:12px}
+.cicn{
+  width:43px;height:43px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(var(--accent-rgb),.16),rgba(var(--accent-2-rgb),.12));
+  border:1px solid rgba(var(--accent-rgb),.18);
+}
+.ctitle{font-size:14px;font-weight:600;color:var(--text-primary);flex:1}
+.cbadge{
+  font-size:11px;padding:4px 11px;border-radius:20px;font-family:var(--font-mono);font-weight:500;
+  background:rgba(var(--accent-rgb),.13);color:var(--accent);white-space:nowrap;
+  border:1px solid rgba(var(--accent-rgb),.2);
+}
+.carr{color:var(--text-hint);font-size:14px;transition:transform .22s var(--ease-out)}
+.ccard.open .carr{transform:rotate(90deg);color:var(--accent)}
+.cdetail{display:none;margin-top:.95rem;padding-top:.95rem;border-top:1px solid var(--border)}
+.ccard.open .cdetail{display:block;animation:secfade .25s var(--ease-out)}
+.csub{font-size:13px;color:var(--text-sec);line-height:1.75;margin-bottom:.9rem}
+
+.dtags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.9rem}
+.dtag{font-size:11px;font-weight:500;padding:4px 11px;border-radius:20px;font-family:var(--font-mono);border:1px solid}
+.tblue{background:rgba(56,189,248,.10);border-color:rgba(56,189,248,.3);color:#5fc9fb}
+.tgreen{background:rgba(47,230,172,.10);border-color:rgba(47,230,172,.3);color:var(--accent)}
+.tamber{background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.3);color:#fbbf24}
+.tpurple{background:rgba(139,123,255,.12);border-color:rgba(139,123,255,.34);color:#ab9fff}
+.tcoral{background:rgba(251,113,133,.10);border-color:rgba(251,113,133,.3);color:#fb7185}
+.tgray{background:rgba(148,163,184,.10);border-color:rgba(148,163,184,.3);color:#94a3b8}
+
+.dg2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.9rem}
+.dbox{background:var(--bg-card2);border-radius:var(--r-sm);padding:.85rem;border:1px solid var(--border)}
+.dh{font-size:11px;font-family:var(--font-mono);margin-bottom:.55rem;font-weight:600;letter-spacing:.02em}
+.dh.g{color:var(--accent)}.dh.r{color:#fbbf24}
+.drow{font-size:12px;color:var(--text-sec);display:flex;gap:6px;margin-bottom:5px;line-height:1.55}
+.drow.g::before{content:'▸';color:var(--accent);flex-shrink:0}
+.drow.r::before{content:'▸';color:#fbbf24;flex-shrink:0}
+
+.scopebar{margin-bottom:.5rem}
+.sbrow{display:flex;justify-content:space-between;margin-bottom:5px}
+.sbrow span{font-size:11px;color:var(--text-sec)}
+.sbrow strong{font-size:11px;color:var(--text-primary);font-weight:600}
+.bar{height:6px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.bf{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 1s var(--ease-out)}
+
+/* ROADMAP */
+.rmsteps{position:relative;padding-left:26px}
+.rmstep{position:relative;margin-bottom:1.2rem}
+.rmstep::before{
+  content:'';position:absolute;left:-20px;top:5px;width:11px;height:11px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  border:2px solid var(--bg-page);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.22);
+}
+.rmstep::after{
+  content:'';position:absolute;left:-15px;top:16px;width:2px;height:calc(100% + 4px);
+  background:linear-gradient(rgba(var(--accent-rgb),.35),rgba(var(--accent-2-rgb),.05));
+}
+.rmstep:last-child::after{display:none}
+.ryear{font-size:11px;font-family:var(--font-mono);font-weight:600;color:var(--accent);margin-bottom:2px}
+.rtitle{font-size:14.5px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
+.rdesc{font-size:13px;color:var(--text-sec);line-height:1.65}
+
+/* QUIZ */
+.qwrap{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-xl);
+  padding:1.9rem;box-shadow:var(--shadow-md);
+}
+.qpbar{height:5px;background:rgba(255,255,255,.06);border-radius:4px;margin-bottom:1.35rem;overflow:hidden}
+.qpfill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:4px;transition:width .4s var(--ease-out)}
+.qnum{font-size:11px;font-family:var(--font-mono);color:var(--text-hint);margin-bottom:.5rem;letter-spacing:.05em}
+.qtext{font-size:16.5px;font-weight:600;color:var(--text-primary);margin-bottom:1.35rem;line-height:1.55}
+.qopts{display:flex;flex-direction:column;gap:8px}
+.qopt{
+  background:var(--bg-card2);border:1px solid var(--border);border-radius:var(--r-md);
+  padding:.9rem 1.15rem;cursor:pointer;font-size:13px;color:var(--text-sec);
+  transition:border-color .15s var(--ease), background .15s var(--ease), color .15s var(--ease), transform .15s var(--ease);
+  text-align:left;font-family:var(--font);
+}
+.qopt:hover{border-color:var(--border-hover);color:var(--text-primary);transform:translateX(2px)}
+.qopt.sel{border-color:var(--accent);background:linear-gradient(90deg,rgba(var(--accent-rgb),.12),rgba(var(--accent-2-rgb),.06));color:var(--text-primary)}
+.qnext{
+  margin-top:1.2rem;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#06151a;border:none;border-radius:var(--r-md);padding:.78rem 1.9rem;
+  font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);
+  transition:opacity .2s var(--ease), transform .15s var(--ease), box-shadow .2s var(--ease);
+}
+.qnext:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 22px -8px rgba(var(--accent-rgb),.5)}
+.qnext:disabled{opacity:.3;cursor:not-allowed}
+.qresult{text-align:center;padding:1rem 0}
+.qresult .big{font-size:52px;margin-bottom:.85rem;filter:drop-shadow(0 4px 18px rgba(var(--accent-rgb),.4))}
+.qresult .rtitle{font-size:22px;font-weight:800;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-bottom:.85rem}
+.qresult .rsub{font-size:14px;color:var(--text-sec);line-height:1.75;margin-bottom:1.35rem;max-width:500px;margin-left:auto;margin-right:auto}
+.qresult .retake{
+  background:transparent;border:1px solid rgba(var(--accent-rgb),.4);color:var(--accent);
+  border-radius:var(--r-md);padding:.62rem 1.35rem;font-size:13px;font-weight:600;cursor:pointer;
+  font-family:var(--font);transition:background .15s var(--ease), transform .15s var(--ease);
+}
+.qresult .retake:hover{background:rgba(var(--accent-rgb),.1);transform:translateY(-1px)}
+
+/* SCHOLARSHIPS */
+#schList{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.schcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.2rem;margin-bottom:0;transition:border-color .18s var(--ease), transform .18s var(--ease)}
+.schcard:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.schhead{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:.6rem}
+.schtitle{font-size:14px;font-weight:600;color:var(--text-primary)}
+.schamt{
+  font-size:11px;font-family:var(--font-mono);font-weight:500;color:var(--accent);
+  background:rgba(var(--accent-rgb),.11);border:1px solid rgba(var(--accent-rgb),.24);
+  padding:4px 11px;border-radius:20px;white-space:nowrap;
+}
+.schdesc{font-size:13px;color:var(--text-sec);line-height:1.65;margin-bottom:.6rem}
+.scheli{font-size:12px;color:var(--text-hint)}
+.scheli strong{color:var(--text-sec);font-weight:600}
+
+/* MENTORSHIP */
+#mentList{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.mentcard{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);
+  padding:1.2rem;margin-bottom:0;display:flex;gap:14px;transition:border-color .18s var(--ease), transform .18s var(--ease);
+}
+.mentcard:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.mavatar{
+  width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;flex-shrink:0;letter-spacing:.03em;box-shadow:var(--shadow-sm);
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#06151a;
+}
+.mname{font-size:14px;font-weight:600;color:var(--text-primary);margin-bottom:2px}
+.mrole{font-size:12px;color:var(--text-sec);margin-bottom:.7rem}
+.mqoute{font-size:13px;color:var(--text-sec);line-height:1.65;font-style:italic;border-left:2px solid var(--accent);padding-left:.9rem;margin-bottom:.6rem}
+.mtopic{font-size:11px;font-family:var(--font-mono);font-weight:500;color:var(--accent)}
+
+/* GRID LAYOUTS */
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:11px;margin-bottom:1.7rem}
+.mcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:1.2rem;transition:border-color .18s var(--ease), transform .18s var(--ease)}
+.mcard:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.mcard .ml{font-size:11px;color:var(--text-hint);margin-bottom:4px;font-family:var(--font-mono);letter-spacing:.04em}
+.mcard .mv{font-size:24px;font-weight:800;color:var(--text-primary);line-height:1;font-family:var(--font-mono)}
+.mcard .ms{font-size:12px;color:var(--text-sec);margin-top:4px}
+
+/* TIPS */
+.tip{
+  background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:0 var(--r-md) var(--r-md) 0;padding:.9rem 1.2rem;margin-bottom:8px;
+  font-size:13px;color:var(--text-sec);line-height:1.7;
+}
+.tip strong{color:var(--text-primary);font-weight:600}
+
+/* LOGOUT */
+body > button[onclick="logout()"]{
+  position:fixed;top:14px;right:18px;z-index:200;
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--bg-nav);
+  backdrop-filter:blur(16px) saturate(1.5);
+  -webkit-backdrop-filter:blur(16px) saturate(1.5);
+  border:1px solid var(--border);border-radius:999px;
+  padding:9px 16px 9px 14px;
+  font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:.05em;
+  color:var(--text-sec);cursor:pointer;
+  box-shadow:var(--shadow-sm);
+  transition:color .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease), transform .15s var(--ease), box-shadow .18s var(--ease);
+}
+body > button[onclick="logout()"]::before{
+  content:'';width:7px;height:7px;border-radius:50%;
+  background:#fb7185;
+  box-shadow:0 0 0 3px rgba(251,113,133,.18);
+  flex-shrink:0;
+}
+body > button[onclick="logout()"]:hover{
+  color:#fff;border-color:rgba(251,113,133,.45);
+  background:rgba(251,113,133,.12);
+  transform:translateY(-1px);
+  box-shadow:0 8px 22px -10px rgba(251,113,133,.5);
+}
+body > button[onclick="logout()"]:active{transform:translateY(0)}
+
+@media(max-width:640px){
+  body > button[onclick="logout()"]{
+    top:auto;bottom:16px;right:16px;
+    padding:11px 14px;box-shadow:var(--shadow-md);
+  }
+}
+
+/* FOOTER */
+.footer{text-align:center;padding:2.35rem;font-size:12px;color:var(--text-hint);border-top:1px solid var(--border);margin-top:3.35rem;font-family:var(--font-mono)}
+.footer span{color:var(--accent);font-weight:600}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  #schList,#mentList{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .streamrow{grid-template-columns:repeat(2,1fr)}
+  .dg2{grid-template-columns:1fr}
+  .hstats{gap:1.4rem}
+  .main{padding:1.7rem 1rem}
+  .hero{padding:2.75rem 1.25rem 2.25rem}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  html{scroll-behavior:auto}
+}
+
+/* Logout Button */
+.logout-btn{
+    margin-left:auto;
+    padding:10px 18px;
+    background:#e63946;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    font-size:13px;
+    font-family:var(--font);
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s ease;
+}
+
+.logout-btn:hover{
+    background:#c1121f;
+    transform:translateY(-2px);
+    box-shadow:0 4px 10px rgba(230,57,70,0.4);
+}
+
+.logout-btn:active{
+    transform:scale(0.98);
+}
+</style>
 </head>
 <body>
 
@@ -18,6 +606,9 @@
   <button class="navbtn" onclick="showPage('quiz')">03 · Quiz</button>
   <button class="navbtn" onclick="showPage('scholarships')">04 · Scholarships</button>
   <button class="navbtn" onclick="showPage('mentorship')">05 · Mentorship</button>
+
+  <!-- Add this -->
+    <button class="navbtn" onclick="logout()">Logout</button>
 </div>
 
 <div class="hero">
@@ -136,15 +727,337 @@
   All data is for educational guidance purposes only.
 </div>
 
-<button onclick="logout()">
-Logout
-</button>
 
+<script>
 
-<script src="Data.js"></script>
-<script src="App.js"></script>
-     <a href="https://careerguidanceportal.netlify.app/" target="_blank" class="btn">
-  Visit my Netlify Site
-</a>
+  function logout() {
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "login.html";
+}
+/* ================================================================
+   DATA — EDITABLE: Add, remove or modify any career/roadmap/etc.
+   ================================================================ */
+const CAREERS = {
+  science:{heading:'Career paths — Science (PCM / PCB)',careers:[
+    {icon:'💻',bg:'rgba(14,165,233,.15)',title:'Computer Science & Engineering',salary:'₹6–50 LPA',sub:'Highest demand, highest salaries. Software dev, AI/ML, cloud computing. Every industry needs software engineers.',tags:[{t:'JEE / BITSAT',c:'tblue'},{t:'4yr B.Tech',c:'tgreen'},{t:'GATE / GRE',c:'tamber'}],scope:96,gains:['Highest salary ceiling in India','Remote work & global jobs','Multiple specialisations — AI, web, cloud','Fast career progression'],struggles:['Constant upskilling required','High competition at top companies','Work-life balance issues at startups','Needs strong DSA fundamentals']},
+    {icon:'🏥',bg:'rgba(0,200,150,.15)',title:'Medicine — MBBS / BDS / BAMS',salary:'₹5–30 LPA',sub:'India\'s most respected profession. NEET-UG is the single gateway. Serve society directly every day.',tags:[{t:'NEET-UG',c:'tblue'},{t:'5.5yr MBBS',c:'tgreen'},{t:'PG Specialisation',c:'tamber'}],scope:88,gains:['Unmatched social respect','Govt hospital jobs available','Diverse specialisations','Always in demand — recession-proof'],struggles:['11+ yrs to become a specialist','Extremely high workload','Private seats cost ₹50L–1Cr','NEET is extremely competitive']},
+    {icon:'⚙️',bg:'rgba(251,191,36,.12)',title:'Mechanical / Civil Engineering',salary:'₹4–20 LPA',sub:'Core engineering. Strong in PSU recruitment, defence, infrastructure. Civil backbone of India\'s construction boom.',tags:[{t:'JEE Main',c:'tblue'},{t:'GATE / UPSC ESE',c:'tamber'},{t:'PSU Jobs',c:'tgreen'}],scope:72,gains:['Strong PSU opportunities (BHEL, ONGC)','Stable long-term govt jobs','Infra boom = massive demand','Combine with MBA for growth'],struggles:['Starting salary lower vs IT','Field jobs in heat & tough conditions','GATE competition is high','Industry adoption of tech is slow']},
+    {icon:'🔭',bg:'rgba(167,139,250,.12)',title:'Pure Sciences — BSc → MSc → PhD',salary:'₹4–15 LPA',sub:'Physics, Chemistry, Maths for those who love science. Leads to IISc, CSIR, ISRO, DRDO, international research.',tags:[{t:'IISc / IISER',c:'tpurple'},{t:'JEST / JAM',c:'tblue'},{t:'KVPY Fellowship',c:'tgreen'}],scope:60,gains:['Deep intellectual satisfaction','Research fellowships cover fees','Global research collaborations','ISRO / DRDO scientist roles'],struggles:['Long PhD journey (5–7 years)','Limited private sector variety','Low stipends during research','Constant publication pressure']},
+    {icon:'📡',bg:'rgba(251,113,133,.12)',title:'Electronics & Communication — ECE',salary:'₹5–25 LPA',sub:'VLSI, embedded, telecom, semiconductors. India\'s chip push is creating massive ECE demand globally.',tags:[{t:'JEE / BITSAT',c:'tblue'},{t:'B.Tech ECE',c:'tgreen'},{t:'ISRO / DRDO',c:'tcoral'}],scope:82,gains:['Semiconductor & VLSI boom','Defence, ISRO, DRDO roles','HW + SW knowledge blend','Strong MS-abroad prospects'],struggles:['Highly specialised field','Core jobs harder without GATE/MS','Needs more than just degree','Technology evolves very rapidly']}
+  ]},
+  commerce:{heading:'Career paths — Commerce',careers:[
+    {icon:'📋',bg:'rgba(251,191,36,.12)',title:'Chartered Accountancy — CA',salary:'₹7–40 LPA',sub:'India\'s most prestigious finance credential. Extremely rigorous but massively rewarding career.',tags:[{t:'CA Foundation',c:'tamber'},{t:'ICAI Exam',c:'tblue'},{t:'3–5 yr journey',c:'tgreen'}],scope:90,gains:['Very high earning potential','Own practice possible','Respected legal authority','Always in demand'],struggles:['Very high exam difficulty','Long articleship period','Multiple failure attempts common','Social life gets impacted']},
+    {icon:'📈',bg:'rgba(14,165,233,.15)',title:'MBA — Finance / Marketing',salary:'₹8–50 LPA',sub:'Top B-schools — IIM, XLRI, SPJIMR. CAT / XAT transforms career trajectory completely.',tags:[{t:'CAT / XAT',c:'tblue'},{t:'IIM / XLRI',c:'tamber'},{t:'BBA → MBA',c:'tgreen'}],scope:88,gains:['Network of lifetime value','High corporate growth trajectory','Diverse career options','Leadership roles early'],struggles:['CAT cracking very competitive','₹20–25L fees at top IIMs','2yr gap from work','High pressure fast-paced culture']},
+    {icon:'⚖️',bg:'rgba(167,139,250,.12)',title:'Law — BA LLB / B.Com LLB',salary:'₹5–30 LPA',sub:'Corporate law, taxation, IPR — growing as India\'s economy and startup ecosystem expands rapidly.',tags:[{t:'CLAT',c:'tpurple'},{t:'NLU Colleges',c:'tblue'},{t:'5yr Integrated',c:'tgreen'}],scope:78,gains:['Diverse practice areas','Own chambers possible','High social respect','Corporate law pays well'],struggles:['First years are low-paying','Long hours in litigation','Heavy research required','Client base takes years']},
+    {icon:'🏦',bg:'rgba(0,200,150,.15)',title:'Banking & Finance — CFA / FRM',salary:'₹5–20 LPA',sub:'Investment banking, equity research, wealth management. CFA gives global mobility.',tags:[{t:'CFA Level 1–3',c:'tgreen'},{t:'RBI Grade B',c:'tblue'},{t:'IBPS PO',c:'tamber'}],scope:83,gains:['Global mobility with CFA','Stable govt banking sector','High IB salaries','Intellectually stimulating'],struggles:['CFA is brutally hard (3 levels)','IB = 80+ hr weeks','Market volatility affects jobs','Govt banking is slow-paced']},
+    {icon:'💼',bg:'rgba(251,113,133,.12)',title:'Entrepreneurship & Startups',salary:'Uncapped',sub:'India\'s top-3 startup ecosystem globally. Build your venture in the world\'s fastest growing market.',tags:[{t:'Any Degree',c:'tcoral'},{t:'Incubators',c:'tblue'},{t:'Angel / VC',c:'tgreen'}],scope:95,gains:['Unlimited earning ceiling','Full creative freedom','Build something meaningful','Large network building'],struggles:['90% startups fail in 5 yrs','No guaranteed salary early','Extreme stress','Family & social pressure']}
+  ]},
+  arts:{heading:'Career paths — Arts & Humanities',careers:[
+    {icon:'🏛️',bg:'rgba(167,139,250,.12)',title:'Civil Services — IAS / IPS / IFS',salary:'₹10–18 LPA + Perks',sub:'Most prestigious govt career in India. Arts graduates have a historical edge in UPSC preparation.',tags:[{t:'UPSC CSE',c:'tpurple'},{t:'Prelims + Mains',c:'tblue'},{t:'2–4 yr prep',c:'tamber'}],scope:98,gains:['Unmatched authority & impact','Housing/car/security perks','Lifelong social respect','Diverse India-wide experience'],struggles:['2–5 yr intense preparation','< 0.2% selection rate','Multiple failures before success','Social isolation during prep']},
+    {icon:'🎨',bg:'rgba(251,113,133,.12)',title:'Design — UX / Graphic / Fashion',salary:'₹4–25 LPA',sub:'Creative careers in explosive demand. Digital design is the new gold in India\'s tech-first economy.',tags:[{t:'NID / NIFT',c:'tcoral'},{t:'BDes',c:'tblue'},{t:'Portfolio Entry',c:'tgreen'}],scope:86,gains:['Highly creative expressive work','Remote work culture','Global portfolio opens doors','Fast growth in tech companies'],struggles:['Client feedback demoralising','Freelance income irregular','Portfolio takes years','Design trends change fast']},
+    {icon:'📺',bg:'rgba(251,191,36,.12)',title:'Mass Communication & Journalism',salary:'₹3–15 LPA',sub:'Digital media, content creation, PR — explosive growth in online media and OTT content ecosystem.',tags:[{t:'BA Journalism',c:'tamber'},{t:'IIMC',c:'tblue'},{t:'Digital Creator',c:'tgreen'}],scope:75,gains:['Exciting dynamic work life','Travel & leader interviews','Strong social impact possible','Multiple revenue streams'],struggles:['Entry salaries very low','Traditional media declining','Long irregular hours','Online trolling & criticism']},
+    {icon:'🧠',bg:'rgba(0,200,150,.15)',title:'Psychology & Counselling',salary:'₹4–20 LPA',sub:'India\'s growing mental health awareness is creating massive demand for trained professionals.',tags:[{t:'BA Psychology',c:'tgreen'},{t:'MA + RCI',c:'tblue'},{t:'M.Phil Clinical',c:'tamber'}],scope:80,gains:['Deeply meaningful work','Growing demand yearly','Multiple settings possible','Private practice possible'],struggles:['Long education (MA + M.Phil)','Emotional burden from clients','Low early career salaries','Supervision required for years']},
+    {icon:'📚',bg:'rgba(14,165,233,.15)',title:'Education & Teaching',salary:'₹3–12 LPA',sub:'Teach, guide, inspire — the most noble profession. Flexible hours with high government job security.',tags:[{t:'BA + B.Ed',c:'tblue'},{t:'NET / SET',c:'tgreen'},{t:'Govt & Pvt Schools',c:'tamber'}],scope:88,gains:['Long vacations & flexibility','High job security (govt)','Nation-building satisfaction','Multiple board options'],struggles:['Lower salaries vs private sector','Govt selection is competitive','Admin burden increasing','Respect varies by context']}
+  ]},
+  emerging:{heading:'Career paths — Emerging Technology',careers:[
+    {icon:'🤖',bg:'rgba(167,139,250,.12)',title:'Artificial Intelligence & Data Science',salary:'₹8–60 LPA',sub:'Fastest growing field globally. Python + maths is your foundation. Every industry is adopting AI.',tags:[{t:'B.Tech / BCA',c:'tpurple'},{t:'Kaggle',c:'tblue'},{t:'Deep Learning',c:'tgreen'}],scope:99,gains:['Highest salary ceiling in tech','Solve real-world big problems','Global demand — work anywhere','Cutting-edge intellectually'],struggles:['Strong maths background needed','Field changes extremely fast','Huge global competition','Hype vs reality confuses beginners']},
+    {icon:'🛡️',bg:'rgba(251,113,133,.12)',title:'Cybersecurity & Ethical Hacking',salary:'₹6–35 LPA',sub:'Every company needs security experts. CEH and OSCP certifications are gold in this field.',tags:[{t:'B.Tech CSE',c:'tcoral'},{t:'CEH / OSCP',c:'tblue'},{t:'Bug Bounty',c:'tgreen'}],scope:94,gains:['High demand low supply','Bug bounties earn ₹10L+','Work with govt & banks','Exciting problem-solving daily'],struggles:['Constant learning required','Legal boundaries are strict','Mental pressure in breach cases','Security clearance for some roles']},
+    {icon:'🎮',bg:'rgba(251,191,36,.12)',title:'Game Development & AR/VR',salary:'₹4–30 LPA',sub:'India\'s gaming industry is booming. Unity, Unreal Engine, and XR design are the key tools.',tags:[{t:'BDes / B.Tech',c:'tamber'},{t:'Unity / Unreal',c:'tblue'},{t:'Metaverse / XR',c:'tgreen'}],scope:88,gains:['Work on your passion daily','Global market to sell to','Creative + technical blend','India gaming grows 30%/yr'],struggles:['Crunch culture is extreme','Competitive — few top jobs','Indie success is rare','Portfolio-only — no degree shortcut']},
+    {icon:'🌱',bg:'rgba(0,200,150,.15)',title:'Sustainability & Green Energy',salary:'₹5–20 LPA',sub:'Solar, EV, climate tech — massive government and private investment flowing into this sector.',tags:[{t:'B.Tech EE/Env',c:'tgreen'},{t:'ESG Analyst',c:'tblue'},{t:'Climate Policy',c:'tamber'}],scope:92,gains:['Work with deep purpose','Govt subsidies boosting jobs','Green jobs grow 20%/yr','Global climate collaboration'],struggles:['Field still maturing in India','Starting salaries moderate','Need tech + policy knowledge','Slow progress can frustrate']},
+    {icon:'✈️',bg:'rgba(14,165,233,.15)',title:'Aviation & Aerospace',salary:'₹6–40 LPA',sub:'Pilot, aerospace engineer, ATC — India\'s aviation sector is booming with new airports and airlines.',tags:[{t:'JEE / NDA',c:'tblue'},{t:'DGCA CPL',c:'tcoral'},{t:'IIT Aerospace',c:'tgreen'}],scope:84,gains:['Pilot lifestyle — travel world','Aerospace India investments boom','Very high prestige career','Unique technical domain'],struggles:['Pilot training costs ₹40–80L','Physical fitness strict','Pilot shortage but hard entry','Long hours & jet lag']}
+  ]},
+  professional:{heading:'Career paths — Professional / New-Age Fields',careers:[
+    {icon:'⚕️',bg:'rgba(0,200,150,.15)',title:'Paramedical — Nursing / Physio / MLT',salary:'₹3–15 LPA',sub:'Allied health is booming. Nurses, physiotherapists, lab techs in huge demand post-COVID nationally.',tags:[{t:'B.Sc Nursing',c:'tgreen'},{t:'BPT / BOT',c:'tblue'},{t:'DMLT / Radiology',c:'tamber'}],scope:89,gains:['Govt hospital jobs available','Global demand — work abroad','Direct patient care impact','Short 3yr degree possible'],struggles:['Physically & emotionally taxing','Night shifts compulsory','Pay lower than doctors','Nursing still undervalued socially']},
+    {icon:'⚖️',bg:'rgba(167,139,250,.12)',title:'Legal Tech & Compliance',salary:'₹5–25 LPA',sub:'Intersection of law and technology — fastest growing new-age legal field in Indian startups and MNCs.',tags:[{t:'BA LLB / CLAT',c:'tpurple'},{t:'LegalTech Certs',c:'tblue'},{t:'Contract Mgmt',c:'tgreen'}],scope:86,gains:['Niche = less competition','High demand at MNCs & startups','Remote work possible','Future-proof career'],struggles:['Requires both law + tech skills','Field still emerging in India','No clear university pathway','Heavy self-learning required']},
+    {icon:'🧬',bg:'rgba(14,165,233,.15)',title:'Biotechnology & Bioinformatics',salary:'₹4–20 LPA',sub:'Genomics, biotech startups, pharma R&D — science meets business in this fast-growing sector.',tags:[{t:'B.Sc / B.Tech Biotech',c:'tblue'},{t:'CSIR / DBT',c:'tgreen'},{t:'Pharma R&D',c:'tamber'}],scope:82,gains:['High research value','Pharma & agri-tech booming','Global research opportunities','India biotech growing fast'],struggles:['Long research path','Low pay in early academia','PhD usually required for senior','Limited top colleges in India']},
+    {icon:'🌐',bg:'rgba(251,191,36,.12)',title:'Digital Marketing & SEO',salary:'₹3–18 LPA',sub:'Every business needs digital presence. Social media, SEO, ads, analytics — any stream can enter.',tags:[{t:'Any Degree + Certs',c:'tamber'},{t:'Google / Meta Certs',c:'tblue'},{t:'Freelance / Agency',c:'tgreen'}],scope:91,gains:['Any stream can enter','Freelance income possible','Quick skill (3–6 months)','High demand at all company sizes'],struggles:['Algorithms change constantly','Can feel repetitive','Client expectations very high','Salary ceiling lower than tech']},
+    {icon:'🎬',bg:'rgba(251,113,133,.12)',title:'Film, Animation & VFX',salary:'₹4–25 LPA',sub:'OTT boom, gaming, and advertising driving massive demand for visual content creators in India.',tags:[{t:'FTII / MAAC / Arena',c:'tcoral'},{t:'BFA Animation',c:'tblue'},{t:'Adobe / Blender',c:'tgreen'}],scope:87,gains:['Work on exciting creative projects','OTT demand is exploding','Freelance globally possible','Highly expressive career'],struggles:['Irregular income early on','Long hours on projects','Highly subjective industry','Portfolio-only entry — no shortcuts']},
+    {icon:'🏋️',bg:'rgba(0,200,150,.15)',title:'Sports Science & Fitness Management',salary:'₹3–20 LPA',sub:'Sports coaching, athletic training, gym management — India\'s fitness revolution is creating new jobs.',tags:[{t:'B.Sc Sports Science',c:'tgreen'},{t:'NSNIS Patiala',c:'tblue'},{t:'SAI Coaching',c:'tamber'}],scope:80,gains:['Passion-driven career','Govt sports academies hiring','Khelo India creating jobs','International exposure possible'],struggles:['Pay is inconsistent','Competitive for top roles','Recognition still limited','Physical burnout risk']}
+  ]},
+  vocational:{heading:'Career paths — Vocational / Short-term Courses',careers:[
+    {icon:'💇',bg:'rgba(251,191,36,.12)',title:'Beauty & Cosmetology',salary:'₹2–12 LPA',sub:'India\'s beauty industry is ₹1 lakh crore. Start your own salon within 1 year of training.',tags:[{t:'6–12 month course',c:'tamber'},{t:'VLCC / Lakme Acad.',c:'tblue'},{t:'Own Salon possible',c:'tgreen'}],scope:84,gains:['Own business early','Low startup cost','High demand everywhere','Govt PMKVY funding available'],struggles:['Long hours standing','Initial income irregular','Physical fatigue high','Client management stressful']},
+    {icon:'👨‍🍳',bg:'rgba(0,200,150,.15)',title:'Hotel Management & Culinary Arts',salary:'₹2–15 LPA',sub:'Hospitality, restaurant, cloud kitchen — India\'s hospitality sector is booming post-COVID strongly.',tags:[{t:'IHM Entrance',c:'tgreen'},{t:'3yr Diploma',c:'tblue'},{t:'Culinary Certs',c:'tamber'}],scope:85,gains:['Global job market','Tips + salary income','Creative culinary expression','5-star hotel lifestyle'],struggles:['Odd hours & weekends','Physically demanding','Slow salary growth early','Ego-heavy kitchen culture']},
+    {icon:'🚗',bg:'rgba(14,165,233,.15)',title:'Automobile & EV Technician',salary:'₹2–10 LPA',sub:'EV revolution needs skilled technicians. 6-month to 1-year certification changes your life.',tags:[{t:'ITI / Diploma',c:'tblue'},{t:'EV Cert (NSDC)',c:'tgreen'},{t:'TATA / Maruti Training',c:'tamber'}],scope:88,gains:['High demand with EV boom','Govt training schemes','Can own a workshop','Quick employment (3–6 months)'],struggles:['Physically demanding work','Workshop conditions can be harsh','Low starting pay in garages','Seasonal demand fluctuation']},
+    {icon:'📸',bg:'rgba(167,139,250,.12)',title:'Photography & Videography',salary:'₹2–20 LPA',sub:'Weddings, events, YouTube, brands — visual storytelling pays well when you\'re consistent and skilled.',tags:[{t:'3–6 month course',c:'tpurple'},{t:'Freelance',c:'tblue'},{t:'YouTube / Instagram',c:'tgreen'}],scope:82,gains:['Flexible self-employment','High wedding season income','Creative fulfilling work','Can work anywhere in India'],struggles:['Income is very seasonal','Equipment costs are high','Saturated wedding market','Self-promotion is essential']},
+    {icon:'🖥️',bg:'rgba(251,113,133,.12)',title:'Computer & Hardware Repair',salary:'₹2–8 LPA',sub:'NIELIT & DOEACC courses. Phone & laptop repair is a ₹10,000 crore industry across India.',tags:[{t:'NIELIT CCC / A Level',c:'tcoral'},{t:'6-month course',c:'tblue'},{t:'Own Repair Shop',c:'tgreen'}],scope:78,gains:['Quick income (1–2 months training)','Own shop in small towns','Always in demand','Low investment to start'],struggles:['Margins are thin','Big service centres compete','Physically tedious work','Requires constant tech updates']},
+    {icon:'🏠',bg:'rgba(251,191,36,.12)',title:'Interior Design & Home Décor',salary:'₹3–20 LPA',sub:'Real estate boom = interior design boom. A short diploma can lead to a high-paying creative career.',tags:[{t:'1yr Diploma',c:'tamber'},{t:'AutoCAD / SketchUp',c:'tblue'},{t:'Freelance / Studio',c:'tgreen'}],scope:86,gains:['Creative + business blend','High project-based income','Growing with real estate','Own practice possible early'],struggles:['Client taste management hard','Project delays common','Irregular income between projects','Physical site visits demanding']}
+  ]},
+  iti:{heading:'Career paths — ITI Courses (Industrial Training Institute)',careers:[
+    {icon:'⚡',bg:'rgba(251,191,36,.12)',title:'Electrician Trade (ITI)',salary:'₹2–8 LPA',sub:'Most in-demand ITI trade. Wiring, panels, motors — jobs everywhere from factories to construction sites.',tags:[{t:'2yr ITI Trade',c:'tamber'},{t:'NCVT Certificate',c:'tblue'},{t:'Govt / Industry Jobs',c:'tgreen'}],scope:92,gains:['Immediate employment after ITI','Govt factory jobs (BHEL, HAL)','Can start own electrical work','Overtime & side income possible'],struggles:['Safety risks if not careful','Outdoor & harsh conditions','Low starting daily wages','Manual labour is heavy']},
+    {icon:'🔧',bg:'rgba(14,165,233,.15)',title:'Fitter Trade (ITI)',salary:'₹2–7 LPA',sub:'Assembly, fitting, maintenance of machines — backbone of India\'s manufacturing sector.',tags:[{t:'2yr ITI Trade',c:'tblue'},{t:'NCVT / SCVT',c:'tgreen'},{t:'PSU Factory Jobs',c:'tamber'}],scope:88,gains:['PSU & private factory jobs','Apprenticeship under Factories Act','Job guarantee at big plants','Skill India stipend available'],struggles:['Heavy physical work','Factory noise & heat','Shift work including nights','Limited career growth ceiling']},
+    {icon:'🛞',bg:'rgba(0,200,150,.15)',title:'Motor Mechanic Vehicle (MMV)',salary:'₹2–9 LPA',sub:'Service & repair of 2, 3 & 4 wheelers. EV upskilling makes this trade even more valuable.',tags:[{t:'2yr ITI Trade',c:'tgreen'},{t:'TATA / Maruti Tie-up',c:'tblue'},{t:'Own Garage possible',c:'tamber'}],scope:90,gains:['Jobs at all auto service centers','Own garage with low capital','EV upskilling adds huge value','Always in demand across India'],struggles:['Oily & physically demanding','Low pay at roadside garages','Seasonal demand patterns','EV needs extra retraining']},
+    {icon:'🔩',bg:'rgba(167,139,250,.12)',title:'Welder Trade (ITI)',salary:'₹2–10 LPA',sub:'Welding is critical for construction, shipbuilding, defence. International demand is very high.',tags:[{t:'1yr ITI Trade',c:'tpurple'},{t:'NCVT Cert',c:'tblue'},{t:'Middle East / Shipyard',c:'tgreen'}],scope:87,gains:['Middle East migration very common','Shipbuilding pays very well','Short 1yr course','High demand in construction boom'],struggles:['Health risk from fumes & UV','Very physically demanding','Safety gear essential','Outdoor & site-based work']},
+    {icon:'❄️',bg:'rgba(251,113,133,.12)',title:'Refrigeration & AC Mechanic (RAC)',salary:'₹2–10 LPA',sub:'AC & refrigeration technicians — India\'s climate creates permanent demand for this skill year-round.',tags:[{t:'2yr ITI Trade',c:'tcoral'},{t:'NCVT Cert',c:'tblue'},{t:'Own AC Business',c:'tgreen'}],scope:91,gains:['Own AC service business possible','Summer demand = very high income','Quick employment after course','Growing with climate change'],struggles:['Chemical handling risks','Summer workload is extreme','Off-season income drops','Equipment costs for own setup']},
+    {icon:'🖨️',bg:'rgba(251,191,36,.12)',title:'Computer Operator & Programming Asst (COPA)',salary:'₹1.5–6 LPA',sub:'Basic IT, data entry, office skills — gateway to white-collar work for ITI students.',tags:[{t:'1yr ITI Trade',c:'tamber'},{t:'NCVT / NIELIT',c:'tblue'},{t:'Office & BPO Jobs',c:'tgreen'}],scope:76,gains:['Entry into office/corporate world','Govt data entry jobs available','Further education possible','Low physical strain'],struggles:['Very competitive for govt jobs','Pay is quite low','Skills get outdated quickly','BPO jobs have high attrition']}
+  ]},
+  poly:{heading:'Career paths — Polytechnic Diploma',careers:[
+    {icon:'🏗️',bg:'rgba(14,165,233,.15)',title:'Diploma in Civil Engineering',salary:'₹2.5–10 LPA',sub:'Site supervision, AutoCAD drafting, construction management — infrastructure boom needs diploma holders.',tags:[{t:'3yr Diploma',c:'tblue'},{t:'POLYCET / DOTE',c:'tgreen'},{t:'PWD / Construction Jobs',c:'tamber'}],scope:85,gains:['Govt PWD & HMDA jobs','Construction site supervision','Can upgrade to B.Tech (lateral)','Infra boom = massive demand'],struggles:['Fieldwork in heat & rain','Site supervisor pressure','Lower pay vs B.Tech engineers','Slow career progression in govt']},
+    {icon:'⚙️',bg:'rgba(251,191,36,.12)',title:'Diploma in Mechanical Engineering',salary:'₹2.5–10 LPA',sub:'Manufacturing, CNC, automobile — core industry diploma with great lateral entry to B.Tech.',tags:[{t:'3yr Diploma',c:'tamber'},{t:'DOTE',c:'tblue'},{t:'Lateral Entry B.Tech',c:'tgreen'}],scope:83,gains:['Factory & PSU shop floor jobs','Lateral entry to B.Tech Year 2','GATE possible after upgrade','Auto industry strong demand'],struggles:['Physical shop floor work','Shift duties in factories','Competition from full B.Tech grads','Salary gap vs B.Tech holders']},
+    {icon:'💡',bg:'rgba(0,200,150,.15)',title:'Diploma in Electrical Engineering',salary:'₹2.5–10 LPA',sub:'Power sector, smart grids, renewables — electricity is life and this diploma is your key.',tags:[{t:'3yr Diploma',c:'tgreen'},{t:'DOTE / State Board',c:'tblue'},{t:'DISCOM / Power Plant',c:'tamber'}],scope:88,gains:['Govt electricity board jobs','Solar & EV sector booming','Lateral entry to B.Tech','Multiple state PSU opportunities'],struggles:['Live electrical work hazards','Shift-based & outdoor roles','Low pay in private sector','Limited private sector visibility']},
+    {icon:'💻',bg:'rgba(167,139,250,.12)',title:'Diploma in Computer Science & IT',salary:'₹2–8 LPA',sub:'Web development, networking, coding basics — quick entry into the IT world.',tags:[{t:'3yr Diploma',c:'tpurple'},{t:'DOTE / State Board',c:'tblue'},{t:'IT Jobs or Lateral Entry',c:'tgreen'}],scope:82,gains:['IT sector entry accessible','BPO, web dev, networking roles','Lateral entry to B.Tech CSE','Can upskill online in parallel'],struggles:['Tough to compete with full B.Tech','Entry salaries quite low','Need strong portfolio to stand out','Constant self-learning needed']},
+    {icon:'🧪',bg:'rgba(251,113,133,.12)',title:'Diploma in Chemical Technology',salary:'₹2–8 LPA',sub:'Pharma, fertilisers, paint, food processing — chemical industry needs trained diploma holders.',tags:[{t:'3yr Diploma',c:'tcoral'},{t:'DOTE',c:'tblue'},{t:'Pharma / Fertiliser Plants',c:'tgreen'}],scope:77,gains:['Pharma industry stable & growing','Plant operator well-paying','Lab technician roles available','Less competitive than IT'],struggles:['Chemical exposure health risks','Safety compliance is strict','Limited company types','Shift duties in plants']},
+    {icon:'📡',bg:'rgba(14,165,233,.15)',title:'Diploma in Electronics & Communication',salary:'₹2–9 LPA',sub:'PCB testing, telecom, IoT hardware — foundational electronics skills for the digital era.',tags:[{t:'3yr Diploma',c:'tblue'},{t:'DOTE',c:'tgreen'},{t:'Telecom / IoT Jobs',c:'tamber'}],scope:84,gains:['Telecom & IoT sector growing','BSNL / private telecom jobs','Lateral entry to B.Tech ECE','Defence & DRDO contractor roles'],struggles:['Need certs beyond diploma','Highly technical steep learning','Private sector pay gap vs degree','Evolving tech needs regular updates']}
+  ]}
+};
+
+const ROADMAPS = {
+  science:{heading:'Roadmap — Science Stream',steps:[
+    {year:'Class 11 — Now',title:'Foundation & Direction',desc:'Focus on NCERT deeply. Start JEE/NEET coaching. Identify PCM (engineering) vs PCB (medical). Follow Physics Wallah, Unacademy, Khan Academy on YouTube.'},
+    {year:'Class 12',title:'Board + Entrance Exam Prep',desc:'Score 75%+ in boards (JEE eligibility). Attempt JEE Main & NEET. Give JEE Advanced if targeting IITs. Apply to BITSAT, TS/AP EAMCET simultaneously.'},
+    {year:'Year 1 of College',title:'Adapt & Explore',desc:'Get comfortable with college life. Don\'t miss Year 1 fundamentals. Join coding clubs, IEEE chapters, science fests. Start basic Python or Lab skills.'},
+    {year:'Year 2–3',title:'Specialise & Intern',desc:'Land your first internship (even unpaid is fine). Build domain projects. Explore GATE coaching alongside. Research internships at IITs/IISc.'},
+    {year:'Year 4 (Final)',title:'Placement or Higher Studies',desc:'Campus placements for top companies. Prepare DSA & system design for tech roles. Apply for M.Tech (GATE), MS abroad (GRE), or MBA (CAT). Network on LinkedIn.'},
+    {year:'Post Graduation',title:'Career Growth & Mastery',desc:'Join a team, deliver real impact. Get industry certifications. Consider MBA after 3–5 yrs experience. Build personal brand on GitHub/LinkedIn.'}
+  ]},
+  commerce:{heading:'Roadmap — Commerce Stream',steps:[
+    {year:'Class 11–12',title:'Start CA Foundation / BBA Prep',desc:'Register for CA Foundation right after Class 11. If MBA-focused, build Economics & Maths base. Learn Tally and basic accounting software.'},
+    {year:'After 12th',title:'B.Com / BBA / CA Intermediate',desc:'Clear CA Foundation and enter Intermediate. Or pursue B.Com (Hons) / BBA. Start articleship under a CA firm — invaluable real-world experience.'},
+    {year:'Year 2–3',title:'Internships & Certifications',desc:'Intern at finance firms, CA offices, or startups. Learn Excel, financial modelling, and GST. Prepare for CA Final or CAT/XAT for MBA.'},
+    {year:'CA Final / MBA',title:'Become a Certified Professional',desc:'Clear CA Final (most take 2–4 attempts). Or score 99+ percentile in CAT for top IIMs. Join Big 4 / consulting / investment banking immediately.'},
+    {year:'3–5 Years of Work',title:'Build Expertise & Network',desc:'Specialise in taxation, audit, M&A, or investment banking. Build client relationships if in practice. Consider CFA or MBA for a career switch.'},
+    {year:'Long-term',title:'Partner / CFO / Entrepreneur',desc:'Become a CA firm partner or CFO. Start your own practice. Launch a fintech startup. Build wealth through angel investing in other startups.'}
+  ]},
+  arts:{heading:'Roadmap — Arts & Humanities',steps:[
+    {year:'Class 11–12',title:'Identify Your Interest Area',desc:'UPSC? Start NCERTs now. Design? Build a portfolio. Law? Prep for CLAT. Psychology? Study well in 12th for good university options. Don\'t wait.'},
+    {year:'After 12th',title:'Enter the Right Degree',desc:'BA LLB for law (CLAT). BDes/BA Design for NID/NIFT (entrance + portfolio). BA Psychology / Journalism for other paths. UPSC aspirants start serious foundation prep.'},
+    {year:'Year 2–3',title:'Skill Building & Internships',desc:'UPSC — start optional subject, join test series. Design — freelance projects, build Behance. Journalism — intern at media house. Psychology — volunteer at NGOs.'},
+    {year:'Graduation',title:'Specialise & Certify',desc:'MA/LLM for law and humanities. M.Des for design. UPSC Mains attempt. IIMC PG Diploma for journalism. Psychology — MA + RCI registration essential.'},
+    {year:'Early Career',title:'Build Portfolio of Impact',desc:'UPSC selection or second attempt. Design — agency / product company joining. Law — junior advocate at firm. Content creators — build audience and monetise.'},
+    {year:'Long-term',title:'Lead, Influence, Transform',desc:'IAS → District Collector → Joint Secretary. Lawyer → Senior Advocate / Judge. Designer → Creative Director. Journalist → Editor / Content Head.'}
+  ]},
+  emerging:{heading:'Roadmap — Emerging Technology Fields',steps:[
+    {year:'Class 11–12 — Now',title:'Start Building, Not Just Studying',desc:'Learn Python basics free on YouTube / Coursera. Build a small project. Try Kaggle intro competitions. Play with Unity for games. Read tech blogs daily.'},
+    {year:'After 12th',title:'Choose the Right Degree',desc:'B.Tech CSE for AI/Cybersecurity. BDes for game art & UX. BSc Data Science now at many universities. Any degree + online skill learning works in parallel.'},
+    {year:'Year 1–2',title:'Build Projects & Online Presence',desc:'Create a GitHub profile. Build 3–4 real projects. Write a tech blog. Participate in hackathons. Join Discord communities. Start freelancing small gigs.'},
+    {year:'Year 3',title:'Internships & Certifications',desc:'Target unicorn/FAANG internships. Get CEH for cybersecurity. Complete deep learning specialisation (Coursera/Andrew Ng). Win a game jam or hackathon.'},
+    {year:'Graduation',title:'Direct Hire or Startup',desc:'Get placed in top tech company or join a startup. Consider MS in US/Europe for AI/Cybersecurity. Launch your own indie game or SaaS product.'},
+    {year:'Long-term',title:'Expert, Founder, or Leader',desc:'AI Researcher at top lab. CISO (Chief Security Officer). Game Studio Founder. Climate Tech CTO. The emerging field leaders of 2035 are studying in Class 11 today.'}
+  ]},
+  professional:{heading:'Roadmap — Professional / New-Age Fields',steps:[
+    {year:'Class 11–12',title:'Build Your Foundation',desc:'Paramedical needs Biology. LegalTech needs Arts/Commerce. Biotech needs PCB. Digital Marketing needs any stream. Identify your professional path by Class 12.'},
+    {year:'After 12th',title:'Enter Specific Degree/Diploma',desc:'B.Sc Nursing/BPT for paramedical. BA LLB for legal tech. B.Sc Biotech for research. Short digital marketing certs (Google/Meta) are available for all streams.'},
+    {year:'Year 1–2',title:'Specialise & Certify',desc:'Paramedical: hospital internship mandatory. Legal: moot courts & law clinics. Biotech: lab skills essential. Digital: build campaigns and real-world case studies.'},
+    {year:'Year 2–3',title:'Industry Exposure',desc:'Intern at hospitals, law firms, biotech labs, digital agencies. Build your niche. Get additional certifications that distinguish you from peers.'},
+    {year:'Graduation',title:'Enter the Industry',desc:'Paramedical: govt hospital / abroad. Legal Tech: join compliance team. Digital Marketing: agency / in-house / freelance. Biotech: pharma R&D or higher studies.'},
+    {year:'Long-term',title:'Become the Domain Expert',desc:'5+ yrs experience = very high value. Start your own clinic, legal consultancy, digital agency, or production house. New-age fields reward early specialists heavily.'}
+  ]},
+  vocational:{heading:'Roadmap — Vocational / Short-term Courses',steps:[
+    {year:'After Class 10 or 12',title:'Choose Your Skill Area',desc:'Beauty? Hotel? Photography? EV Mechanic? Spend 2 weeks researching and visiting local institutes. Talk to working professionals before choosing your path.'},
+    {year:'Months 1–6',title:'Enrol & Learn Core Skills',desc:'Join PMKVY-certified training or recognised private institute (VLCC, IHM, ARENA, NIELIT). Focus 100% on hands-on practical skill building every day.'},
+    {year:'Months 6–12',title:'Apprenticeship / Internship',desc:'Work under a professional for free or low pay. Learn real client handling, speed, and quality standards. Build your first portfolio or initial client base.'},
+    {year:'Year 1–2',title:'First Employment or Own Setup',desc:'Join a salon, hotel, studio, or repair shop. Save money. Build your reputation. Consider your own setup or start freelancing as a side income.'},
+    {year:'Year 2–3',title:'Grow Income & Upskill',desc:'Take advanced courses. Hire 1–2 assistants if you have your own setup. Go online — Instagram, YouTube, JustDial. Add premium services. Raise your prices.'},
+    {year:'Long-term',title:'Own Business or Personal Brand',desc:'Own salon chain, restaurant, photography studio, or repair franchise. Vocational skills + business sense = financial independence with relatively low overhead.'}
+  ]},
+  iti:{heading:'Roadmap — ITI Courses',steps:[
+    {year:'After Class 8 or 10',title:'Apply to ITI & Choose Trade',desc:'Admission via state ITI entrance exam or merit. Choose trade based on interest: Electrician, Fitter, MMV, Welder, COPA, RAC. Duration: 1–2 years.'},
+    {year:'Year 1',title:'Theory + Workshop Practice',desc:'Half day theory, half day workshop. Learn tools, safety, and basic operations. Pass semester exams consistently. NCVT certification is your primary goal.'},
+    {year:'Year 2 (2yr trades)',title:'Advanced Skills & Apprenticeship',desc:'Advanced trade skills + mandatory apprenticeship under Apprentices Act 1961. Get placed in govt factories (BHEL, HAL, Ordnance) or large private companies.'},
+    {year:'After ITI',title:'NCVT Certificate & Employment',desc:'Appear for All India Trade Test (AITT). NCVT certificate opens doors to PSU apprenticeships, private factories, and government recruitment boards nationwide.'},
+    {year:'Year 3–5',title:'Gain Experience & Upskill',desc:'Work in industry. Appear for Apprenticeship. Consider ATS (Apprenticeship Training Scheme). Upskill with EV, solar, or CNC certificates for better pay.'},
+    {year:'Long-term',title:'Supervisor, Contractor, Entrepreneur',desc:'Become a foreman, site supervisor, or start your own electrical/plumbing/AC service business. ITI + experience + business mindset = solid independent career.'}
+  ]},
+  poly:{heading:'Roadmap — Polytechnic Diploma',steps:[
+    {year:'After Class 10 or 12',title:'POLYCET / State Entrance',desc:'Telangana & AP: POLYCET after Class 10. 3-year diploma in Civil, Mechanical, ECE, EEE, CSE or Chemical. State government institutions are very affordable.'},
+    {year:'Year 1',title:'Engineering Fundamentals',desc:'Engineering Drawing, Maths, Physics, and core trade subjects. Focus on fundamentals — they form the base for everything ahead in your career.'},
+    {year:'Year 2',title:'Core Technical Skills + Mini Projects',desc:'Deep-dive into your branch. Do mini projects. Attend industry visits. Learn AutoCAD (Civil/Mech), electrical simulations, or basic programming (CSE).'},
+    {year:'Year 3',title:'Final Year Project & Internship',desc:'Do a strong final year project — it is your resume highlight. Intern at construction sites, factories, or IT companies. Prepare for campus drives.'},
+    {year:'After Diploma',title:'Work or Lateral Entry B.Tech',desc:'OPTION A: Junior engineer / site supervisor / technician job. OPTION B: Join B.Tech Year 2 via ECET lateral entry — complete B.Tech in 3 more years.'},
+    {year:'Long-term',title:'Junior Engineer to Senior Leader',desc:'With experience: Project Manager, Site In-charge, or Plant Supervisor. With B.Tech upgrade + GATE: reach PSU or higher engineering government roles.'}
+  ]}
+};
+
+const QUIZ = [
+  {q:'What do you enjoy doing most in your free time?',opts:[{t:'Solving puzzles, coding or gaming',s:'emerging'},{t:'Reading news, history or social topics',s:'arts'},{t:'Managing money, business ideas or trading',s:'commerce'},{t:'Building things, fixing machines or experiments',s:'iti'},{t:'Helping people — health care or fitness',s:'professional'},{t:'Drawing, cooking, photography or hands-on crafts',s:'vocational'}]},
+  {q:'Which subject interests you the most?',opts:[{t:'Maths & Physics',s:'science'},{t:'Economics & Accountancy',s:'commerce'},{t:'History, Civics & Literature',s:'arts'},{t:'Computer Science & Technology',s:'emerging'},{t:'Biology & Health Science',s:'professional'},{t:'Workshop, Drawing & Practical subjects',s:'iti'}]},
+  {q:'How soon do you want to start earning?',opts:[{t:'Within 1 year — I need income fast',s:'vocational'},{t:'1–2 years — some training is fine',s:'iti'},{t:'3 years — a diploma is okay',s:'poly'},{t:'4+ years — a degree is worth the wait',s:'science'},{t:'5+ years — I want a top professional career',s:'commerce'}]},
+  {q:'What kind of work setting excites you most?',opts:[{t:'Sitting at a computer, coding & designing',s:'emerging'},{t:'Working with tools, machines & equipment',s:'iti'},{t:'Client service, hospitality & people skills',s:'vocational'},{t:'Office work — accounts, law, management',s:'commerce'},{t:'Creative work — art, film, photography',s:'professional'},{t:'Fieldwork — construction, civil, outdoors',s:'poly'}]},
+  {q:'What is your education goal after 12th?',opts:[{t:'IIT / NEET — top engineering or medical college',s:'science'},{t:'CA, MBA, or law from a top institution',s:'commerce'},{t:'NID, NIFT, IIMC or UPSC preparation',s:'arts'},{t:'ITI trade certificate (1–2 years)',s:'iti'},{t:'Polytechnic diploma (3 years)',s:'poly'},{t:'Short-term vocational course (6–12 months)',s:'vocational'}]},
+  {q:'What matters most in your career?',opts:[{t:'High salary & global opportunities',s:'emerging'},{t:'Stability & government job security',s:'iti'},{t:'Creative freedom & self-expression',s:'arts'},{t:'Prestige & social respect',s:'science'},{t:'Helping society & making a real impact',s:'professional'},{t:'Running my own business from early on',s:'vocational'}]}
+];
+
+const QUIZ_RESULTS = {
+  science:{emoji:'🔬',title:'Science & Engineering',desc:'You are analytical, curious and love understanding the world at a fundamental level. Engineering, Medicine or Pure Research will let you thrive intellectually and financially.'},
+  commerce:{emoji:'📊',title:'Commerce & Business',desc:'You think in systems, numbers and strategy. CA, MBA, investment banking or entrepreneurship are perfect paths for your sharp and structured business mindset.'},
+  arts:{emoji:'🎭',title:'Arts & Humanities',desc:'You care deeply about society, stories and human experience. Civil Services, Design, Journalism, Law or Psychology are ideal for your empathy and intellectual depth.'},
+  emerging:{emoji:'🚀',title:'Emerging Technology',desc:'You are a builder drawn to the future. AI, Cybersecurity, Game Dev and Green Tech are where your problem-solving mindset and curiosity will shine the brightest.'},
+  professional:{emoji:'⚕️',title:'Professional / New-Age Fields',desc:'You want a career with purpose and real impact. Paramedical, Biotechnology, Sports Science, Legal Tech or Digital Media are your calling in this new era.'},
+  vocational:{emoji:'🛠️',title:'Vocational / Short-term',desc:'You are practical, hands-on and want quick results. Beauty, Hotel Management, Photography or a trade skill can give you independence and income faster than most paths.'},
+  iti:{emoji:'🔧',title:'ITI Trade Courses',desc:'You are skilled with your hands and want a solid well-paying technical career. Electrician, Fitter, Motor Mechanic or Welder trades offer govt jobs, factory work and self-employment.'},
+  poly:{emoji:'🏗️',title:'Polytechnic Diploma',desc:'You want engineering-level skills without a 4-year B.Tech. A 3-year diploma in Civil, Mechanical, ECE or CSE gives you jobs right away — and the option to upgrade via lateral entry.'}
+};
+
+const SCHOLARSHIPS = [
+  {title:'PM Yasasvi Scholarship',amt:'₹75,000–1,25,000 / yr',desc:'Central govt scheme for OBC/EBC/DNT students scoring 60%+ in Class 10. Covers education and living expenses.',eli:'OBC / EBC / DNT | Family income < ₹2.5 LPA | State-level written exam'},
+  {title:'INSPIRE Scholarship — DST',amt:'₹80,000 / yr',desc:'For students in top 1% of Class 12 boards pursuing Natural & Basic Sciences. Funded by Dept of Science & Technology.',eli:'Top 1% in Board Exams | BSc / Integrated MSc in Pure Sciences only'},
+  {title:'National Means-cum-Merit Scholarship (NMMS)',amt:'₹12,000 / yr',desc:'State-level exam for Class 8 students. Renewable till Class 12. Helps prevent dropouts from economically weaker sections.',eli:'Class 8 final exam marks | Family income < ₹3.5 LPA'},
+  {title:'AICTE Pragati Scholarship for Girls',amt:'₹50,000 / yr',desc:'For girl students in B.Tech or Diploma (Polytechnic). Covers tuition fee, books and living allowance.',eli:'Female students | AICTE-approved tech college | Family income < ₹8 LPA'},
+  {title:'KVPY Fellowship — IISc',amt:'₹5,000–7,000 / month',desc:'Prestigious research fellowship for students in Basic Sciences. Awarded by IISc Bengaluru for research aptitude.',eli:'Class 11–12 Science students | Aptitude test + Interview selection'},
+  {title:'HDFC Parivartan ECSS',amt:'Up to ₹75,000',desc:'Education Crisis Scholarship for students facing sudden financial hardship mid-education. For any recognised institution.',eli:'Merit + financial need documentation | Any stream | Any recognised college'},
+  {title:'Telangana TS ePass Scholarship',amt:'Full fee reimbursement',desc:'State scheme for SC/ST/BC/EBC students in Telangana. Covers full tuition fee and maintenance allowance.',eli:'TS domicile | SC / ST / BC / EBC | Income limits apply | ePass portal registration'},
+  {title:'National Apprenticeship Promotion Scheme',amt:'₹1,500 / month stipend',desc:'For ITI and Diploma holders during apprenticeship in industries. Govt shares 50% of stipend cost with employers.',eli:'ITI / Diploma pass | Registered apprentice under Factories Act industries'},
+  {title:'PMKVY — Skill India Scholarship',amt:'Free training + ₹500–8,000 incentive',desc:'Free vocational & skill training under PM Kaushal Vikas Yojana. Cash incentive on completion and placement.',eli:'Any stream | Age 15–45 | Aadhaar-linked | Registered NSDC/PMKVY center'},
+  {title:'Google Generation Scholarship',amt:'₹75,000 (one-time)',desc:'For women & underrepresented groups in Computer Science pursuing tech degrees in India.',eli:'Female / underrepresented | B.Tech CSE or related field | Good academic record'},
+  {title:'Tata Trusts Scholarship',amt:'Varies by program',desc:'Multiple programs for tribal, rural and underprivileged students across arts, science and vocational education.',eli:'Tribal / underprivileged background | Program-specific eligibility criteria apply'},
+  {title:'Sitaram Jindal Foundation',amt:'₹1,500–3,000 / month',desc:'For meritorious students in financial need. Covers Class 10 to post-graduation across any stream, pan-India.',eli:'Merit + family income criteria | Any recognised stream | Pan-India application'}
+];
+
+const MENTORS = [
+  {initials:'AR',color:'#185fa5',name:'Arjun Reddy',role:'Senior Software Engineer · IIT Bombay 2020',quote:'I cracked JEE on my second attempt. The gap year felt like failure — but it taught me resilience that still drives my work every day.',topic:'Ask about: JEE prep, CSE career, Hyderabad tech ecosystem'},
+  {initials:'PS',color:'#0f6e56',name:'Priya Srinivasan',role:'CA & Finance Analyst, Deloitte · ICAI 2021',quote:'Failed CA Intermediate twice. Most CAs do. What matters is understanding why you failed and coming back smarter and more focused.',topic:'Ask about: CA exam strategy, Big 4 careers, work-life balance'},
+  {initials:'MK',color:'#993c1d',name:'Mohammed Khaleel',role:'IAS Officer 2019 Batch · Osmania University',quote:'I studied in Telugu medium till my degree. UPSC is not about English or college — it is about clarity of thought and consistency.',topic:'Ask about: UPSC strategy, Arts stream, optional subjects'},
+  {initials:'RK',color:'#854f0b',name:'Ramesh Kumar',role:'ITI Electrician → BHEL Engineer · 12 yrs experience',quote:'I did ITI when everyone said it was inferior. Today I supervise a 40-person team at BHEL and earn more than many B.Tech graduates.',topic:'Ask about: ITI trades, BHEL/HAL government jobs, trade career growth'},
+  {initials:'LN',color:'#3c3489',name:'Lakshmi Narayana',role:'Polytechnic → B.Tech (Lateral) → Site Manager',quote:'POLYCET was my only option after 10th. Lateral entry B.Tech, then 8 years in construction. Now I manage ₹50 crore projects.',topic:'Ask about: Polytechnic diploma, ECET lateral entry, civil engineering careers'},
+  {initials:'SK',color:'#0ea5e9',name:'Sneha Kulkarni',role:'Medical Intern, Hyderabad · NEET AIR 4500',quote:'NEET is a marathon not a sprint. I revised NCERT 7 times. Biology is full marks on a plate if you are truly consistent with it.',topic:'Ask about: NEET strategy, MBBS life, and medical career planning'},
+  {initials:'VT',color:'#0f6e56',name:'Vandana Tyagi',role:'Cosmetologist → Own Salon Chain · VLCC Certified',quote:'My parents thought beauty courses were a backup option. My salon chain now earns more than my engineer brother. Skills over degrees.',topic:'Ask about: Vocational courses, salon business setup, PMKVY funding'},
+  {initials:'AM',color:'#993c1d',name:'Aryan Mehta',role:'Cybersecurity Analyst, Bangalore · Self-taught + CEH',quote:'I was a commerce student who taught himself ethical hacking online. Your stream does not define your career — your curiosity does.',topic:'Ask about: Career switches, cybersecurity self-study, bug bounty programs'}
+];
+
+/* ================================================================
+   STATE & FUNCTIONS
+   ================================================================ */
+let cs='science', cr='science', cq=0, sel=null;
+let scores={science:0,commerce:0,arts:0,emerging:0,professional:0,vocational:0,iti:0,poly:0};
+
+function showPage(p){
+  ['careers','roadmap','quiz','scholarships','mentorship'].forEach(x=>{
+    document.getElementById('page-'+x).classList.toggle('show',x===p);
+  });
+  document.querySelectorAll('.navbtn').forEach((b,i)=>{
+    b.classList.toggle('act',['careers','roadmap','quiz','scholarships','mentorship'][i]===p);
+  });
+}
+
+function selectStream(s){
+  cs=s;
+  document.querySelectorAll('[id^="stab-"]').forEach(e=>e.classList.remove('act'));
+  document.getElementById('stab-'+s).classList.add('act');
+  renderCareers(s);
+}
+
+function renderCareers(s){
+  const d=CAREERS[s];
+  document.getElementById('careerHeading').textContent=d.heading;
+  document.getElementById('careerList').innerHTML=d.careers.map((c,i)=>`
+    <div class="ccard" id="cc${i}" onclick="toggleCard(${i})">
+      <div class="crow">
+        <div class="cicn" style="background:${c.bg}">${c.icon}</div>
+        <div class="ctitle">${c.title}</div>
+        <span class="cbadge">${c.salary}</span>
+        <span class="carr">›</span>
+      </div>
+      <div class="cdetail">
+        <p class="csub">${c.sub}</p>
+        <div class="dtags">${c.tags.map(t=>`<span class="dtag ${t.c}">${t.t}</span>`).join('')}</div>
+        <div class="scopebar">
+          <div class="sbrow"><span>Future / job market scope</span><strong>${c.scope}%</strong></div>
+          <div class="bar"><div class="bf" style="width:${c.scope}%"></div></div>
+        </div>
+        <div class="dg2">
+          <div class="dbox">
+            <div class="dh g">Gains</div>
+            ${c.gains.map(g=>`<div class="drow g">${g}</div>`).join('')}
+          </div>
+          <div class="dbox">
+            <div class="dh r">Struggles</div>
+            ${c.struggles.map(g=>`<div class="drow r">${g}</div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleCard(i){document.getElementById('cc'+i).classList.toggle('open');}
+
+function selectRoadmap(s){
+  cr=s;
+  document.querySelectorAll('[id^="rtab-"]').forEach(e=>e.classList.remove('act'));
+  document.getElementById('rtab-'+s).classList.add('act');
+  const d=ROADMAPS[s];
+  document.getElementById('rmHeading').textContent=d.heading;
+  document.getElementById('rmList').innerHTML=d.steps.map(st=>`
+    <div class="rmstep">
+      <div class="ryear">${st.year}</div>
+      <div class="rtitle">${st.title}</div>
+      <div class="rdesc">${st.desc}</div>
+    </div>`).join('');
+}
+
+function renderQuiz(){
+  if(cq>=QUIZ.length){showResult();return;}
+  const q=QUIZ[cq];
+  document.getElementById('qprog').style.width=((cq/QUIZ.length)*100)+'%';
+  document.getElementById('qnum').textContent=`Question ${cq+1} of ${QUIZ.length}`;
+  document.getElementById('qtext').textContent=q.q;
+  document.getElementById('qresult').style.display='none';
+  document.getElementById('qnext').style.display='';
+  sel=null;
+  document.getElementById('qnext').disabled=true;
+  document.getElementById('qopts').innerHTML=q.opts.map((o,i)=>`
+    <button class="qopt" onclick="pickOpt(${i},'${o.s}')">${o.t}</button>`).join('');
+}
+
+function pickOpt(i,stream){
+  document.querySelectorAll('.qopt').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('.qopt')[i].classList.add('sel');
+  sel=stream;
+  document.getElementById('qnext').disabled=false;
+}
+
+function nextQ(){
+  if(sel)scores[sel]++;
+  cq++;
+  renderQuiz();
+}
+
+function showResult(){
+  const top=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0][0];
+  const r=QUIZ_RESULTS[top];
+  document.getElementById('qprog').style.width='100%';
+  document.getElementById('qnum').textContent='Quiz complete!';
+  document.getElementById('qtext').textContent='';
+  document.getElementById('qopts').innerHTML='';
+  document.getElementById('qnext').style.display='none';
+  const el=document.getElementById('qresult');
+  el.style.display='block';
+  el.innerHTML=`
+    <div class="big">${r.emoji}</div>
+    <div class="rtitle">Your best-fit stream: ${r.title}</div>
+    <div class="rsub">${r.desc}</div>
+    <button class="retake" onclick="retakeQuiz()">Retake Quiz</button>`;
+}
+
+function retakeQuiz(){
+  cq=0;
+  scores={science:0,commerce:0,arts:0,emerging:0,professional:0,vocational:0,iti:0,poly:0};
+  sel=null;
+  renderQuiz();
+}
+
+// INIT
+renderCareers('science');
+selectRoadmap('science');
+renderQuiz();
+
+document.getElementById('schList').innerHTML=SCHOLARSHIPS.map(s=>`
+  <div class="schcard">
+    <div class="schhead"><div class="schtitle">${s.title}</div><div class="schamt">${s.amt}</div></div>
+    <div class="schdesc">${s.desc}</div>
+    <div class="scheli"><strong>Eligibility:</strong> ${s.eli}</div>
+  </div>`).join('');
+
+document.getElementById('mentList').innerHTML=MENTORS.map(m=>`
+  <div class="mentcard">
+    <div class="mavatar" style="background:${m.color}">${m.initials}</div>
+    <div style="flex:1">
+      <div class="mname">${m.name}</div>
+      <div class="mrole">${m.role}</div>
+      <div class="mqoute">${m.quote}</div>
+      <div class="mtopic">${m.topic}</div>
+    </div>
+  </div>`).join('');
+  
+</script>
+
 </body>
 </html>
