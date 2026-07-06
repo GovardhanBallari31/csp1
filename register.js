@@ -32,7 +32,7 @@ function registerUser() {
     }
     else {
 
-        alert("Use these credentials:\n\nName : krishna\nEmail : krishna@gmail.com\nPassword : 123456\nRole : USER");
+        alert("Use these credentials:\n\nName : krishnah\nEmail : krishnah@gmail.com\nPassword : 123456\nRole : USER");
 
     }
 }
