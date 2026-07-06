@@ -20,7 +20,7 @@ Choosing the right career path can be challenging for students. This portal prov
 ## 🌐 Live Demo
 
 🔗 **Website:**
-https://careerguidanceportal.netlify.app/
+https://careerguidanceworkshops.netlify.app/
 
 ---
 
@@ -77,16 +77,6 @@ https://careerguidanceportal.netlify.app/
 * CSS3
 * JavaScript
 
-### Backend
-
-* Java
-* Spring Boot
-* Spring Data JPA
-
-### Database
-
-* MySQL
-
 ### Deployment
 
 * GitHub
@@ -111,11 +101,6 @@ career-guidance-portal/
 │   ├── data.js
 │   ├── login.js
 │   └── register.js
-│
-├── backend/
-│   ├── src/main/java
-│   ├── src/main/resources
-│   └── pom.xml
 │
 └── README.md
 ```
@@ -146,18 +131,6 @@ index.html
 
 in your browser.
 
-### 4️⃣ Backend Setup (Spring Boot)
-
-Configure MySQL database credentials in:
-
-```properties
-application.properties
-```
-
-Run the Spring Boot application:
-
-```bash
-mvn spring-boot:run
 ```
 
 ---
