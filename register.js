@@ -1,18 +1,12 @@
-async function registerUser() {
+function registerUser() {
 
     const user = {
-
-        name: document.getElementById("name").value,
-
-        email: document.getElementById("email").value,
-
-        password: document.getElementById("password").value,
-
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        password: document.getElementById("password").value.trim(),
         role: document.getElementById("role").value
-
     };
 
-    // Validation
     if (
         user.name === "" ||
         user.email === "" ||
@@ -22,40 +16,23 @@ async function registerUser() {
         return;
     }
 
-    try {
+    // Allow only this user
+    if (
+        user.name === "krishna" &&
+        user.email === "krishna@gmail.com" &&
+        user.password === "123456" &&
+        user.role === "USER"
+    ) {
 
-        const response = await fetch("http://localhost:8080/api/users", {
+        localStorage.setItem("user", JSON.stringify(user));
 
-            method: "POST",
+        alert("Registration Successful");
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+        window.location.href = "login.html";
+    }
+    else {
 
-            body: JSON.stringify(user)
-
-        });
-
-        if (response.ok) {
-
-            alert("Registration Successful");
-
-            window.location.href = "login.html";
-
-        } else {
-
-            const error = await response.text();
-
-            alert("Registration Failed\n" + error);
-
-        }
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert("Cannot connect to Spring Boot Server.");
+        alert("Use these credentials:\n\nName : krishna\nEmail : krishna@gmail.com\nPassword : 123456\nRole : USER");
 
     }
-
 }
