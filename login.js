@@ -1,37 +1,32 @@
-async function loginUser() {
+function loginUser() {
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
-    const response = await fetch("http://localhost:8080/api/users/login", {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
 
-        method: "POST",
+    if (!storedUser) {
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+        alert("Please register first.");
 
-        body: JSON.stringify({
-            email: email,
-            password: password
-        })
+        window.location.href = "register.html";
 
-    });
+        return;
+    }
 
-    if(response.ok){
+    if (
+        email === storedUser.email &&
+        password === storedUser.password
+    ) {
 
-        const user = await response.json();
+        alert("Login Successful");
 
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("loggedIn","true");
+        window.location.href = "index.html";
 
-        // Open Career Guidance Portal
-        window.location.href="index.html";
-
-    }else{
+    }
+    else {
 
         alert("Invalid Email or Password");
 
     }
-
 }
