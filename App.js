@@ -1,7 +1,7 @@
 /* ================================================================
    APP LOGIC — wires up CAREERS / ROADMAPS / QUIZ / SCHOLARSHIPS / MENTORS
    ================================================================ */
-  const loggedUser = JSON.parse(localStorage.getItem("user"));
+   const loggedUser = JSON.parse(localStorage.getItem("user"));
 
 if (!loggedUser) {
 
@@ -40,86 +40,65 @@ function selectStream(stream) {
   renderCareers();
 }
 
-async function renderCareers() {
+function renderCareers() {
+    const careers = CAREERS[currentStream].careers;
+    
+    document.getElementById("careerHeading").textContent = 
+      "Career Paths — " + currentStream.charAt(0).toUpperCase() + currentStream.slice(1);
 
-    const response =
-        await fetch(
-        "http://localhost:8080/api/careers"
-        );
+    const list = document.getElementById("careerList");
 
-    const careers =
-        await response.json();
-
-    const filtered =
-        careers.filter(
-        c => c.stream === currentStream
-        );
-
-    document.getElementById(
-        "careerHeading"
-    ).textContent =
-      "Career Paths - "
-      + currentStream;
-
-    const list =
-        document.getElementById(
-        "careerList"
-        );
-
-    list.innerHTML =
-        filtered.map((c,i)=>`
-
-        <div class="ccard"
-             id="ccard-${i}"
-             onclick="toggleCard(${i})">
-
+    list.innerHTML = careers.map((c, i) => `
+        <div class="ccard" id="ccard-${i}" onclick="toggleCard(${i})">
             <div class="crow">
-
-                <div class="cicn">
-                    💼
-                </div>
-
-                <div class="ctitle">
-                    ${c.title}
-                </div>
-
-                <div class="cbadge">
-                    ${c.salary}
-                </div>
-
+                <div class="cicn">${c.icon}</div>
+                <div class="ctitle">${c.title}</div>
+                <div class="cbadge">${c.salary}</div>
+                <div class="carr">›</div>
             </div>
-
             <div class="cdetail">
-
-                <div class="csub">
-                    ${c.description}
-                </div>
-
+                <div class="csub">${c.sub}</div>
                 <div class="scopebar">
-
                     <div class="sbrow">
-
                         <span>Career Scope</span>
-
-                        <strong>
-                        ${c.scopePercentage}%
-                        </strong>
-
+                        <strong>High</strong>
                     </div>
-
                     <div class="bar">
-                        <div class="bf"
-                             style="width:${c.scopePercentage}%">
-                        </div>
+                        <div class="bf" style="width:85%"></div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     `).join("");
+}
+
+function toggleCard(index) {
+  const card = document.getElementById('ccard-' + index);
+  document.querySelectorAll('#page-careers .ccard').forEach(c => c.classList.remove('open'));
+  card.classList.add('open');
+}
+
+/* ---------- ROADMAP PAGE ---------- */
+function selectRoadmap(stream) {
+  currentRoadmap = stream;
+  document.querySelectorAll('#page-roadmap .stab').forEach(t => t.classList.remove('act'));
+  document.getElementById('rtab-' + stream).classList.add('act');
+  renderRoadmap();
+}
+
+function renderRoadmap() {
+  const roadmap = ROADMAPS[currentRoadmap];
+  
+  document.getElementById("rmHeading").textContent = roadmap.heading;
+  
+  const list = document.getElementById("rmList");
+  list.innerHTML = roadmap.steps.map(step => `
+    <div class="rmstep">
+      <div class="ryear">${step.year}</div>
+      <div class="rtitle">${step.title}</div>
+      <div class="rdesc">${step.desc}</div>
+    </div>
+  `).join("");
 }
 
 /* ---------- QUIZ PAGE ---------- */
