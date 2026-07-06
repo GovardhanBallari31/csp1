@@ -1,7 +1,15 @@
 /* ================================================================
    APP LOGIC — wires up CAREERS / ROADMAPS / QUIZ / SCHOLARSHIPS / MENTORS
    ================================================================ */
+  const loggedUser = JSON.parse(localStorage.getItem("user"));
 
+if (!loggedUser) {
+
+    alert("Please Login First");
+
+    window.location.href = "login.html";
+
+}
 if(localStorage.getItem("loggedIn") != "true"){
 
     window.location.href="login.html";
