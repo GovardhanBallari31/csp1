@@ -18,8 +18,8 @@ function registerUser() {
 
     // Allow only this user
     if (
-        user.name === "krishna" &&
-        user.email === "krishna@gmail.com" &&
+        user.name === "krishnah" &&
+        user.email === "krishnah@gmail.com" &&
         user.password === "123456" &&
         user.role === "USER"
     ) {
